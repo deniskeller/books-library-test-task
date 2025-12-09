@@ -1,0 +1,35 @@
+# Папка зависимостей Composer
+/vendor/
+
+# Файлы окружения
+.env
+.env.local
+.env.production
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log
+logs/
+
+# IDE файлы
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Временные файлы
+tmp/
+cache/
+sessions/
+
+# Ошибки PHP
+/app/etc/env.php
+/var/
+!/var/.htaccess
+
+# Файлы ОС
+node_modules/
+npm-debug.log*
