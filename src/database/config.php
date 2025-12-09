@@ -74,11 +74,11 @@ try {
   }
 
   if ($allSuccess) {
-    echo json_encode([
-      'success' => true,
-      'message' => 'Все таблицы успешно созданы или уже существуют.',
-      'tables' => $results
-    ]);
+    // echo json_encode([
+    //   'success' => true,
+    //   'message' => 'Все таблицы успешно созданы или уже существуют.',
+    //   'tables' => $results
+    // ]);
   } else {
     echo json_encode([
       'success' => false,
@@ -92,4 +92,22 @@ try {
     'message' => 'Ошибка подключения к базе данных: ' . $e->getMessage()
   ]);
   exit();
+}
+
+
+class Database
+{
+  private  $host = '127.0.1.23';
+  private  $dbname = 'library';
+  private  $username = 'root';
+  private  $password = '';
+  private  $authors_table = 'authors';
+  private  $books_table = 'books';
+  private  $authors_books_table = 'authors_books';
+  public $pdo;
+
+  public function getConnection()
+  {
+    $this->pdo = null;
+  }
 }
