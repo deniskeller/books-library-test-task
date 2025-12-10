@@ -1,9 +1,10 @@
 <?php
+require __DIR__ . '/../../vendor/autoload.php';
 
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: http://localhost:5173');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+// header('Content-Type: application/json');
+// header('Access-Control-Allow-Origin: http://localhost:5173');
+// header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+// header('Access-Control-Allow-Headers: Content-Type');
 
 require_once '../utils/db_functions.php';
 
@@ -17,6 +18,7 @@ $host = '127.0.1.23';
 $dbname = 'library';
 $username = 'root';
 $password = '';
+// Таблицы
 $authors_table = 'authors';
 $books_table = 'books';
 $authors_books_table = 'authors_books';
@@ -107,6 +109,7 @@ class Database
   public $pdo;
 
   public function getConnection()
+
   {
     $this->pdo = null;
   }
