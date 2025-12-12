@@ -2,7 +2,9 @@
   "autoload": {
     "psr-4": {
       "BOOKSLibraryCORE\\": "core/",
-      "BOOKSLibraryAPP\\": "app/"
+      "BOOKSLibraryCONTROLLERS\\": "app/Controllers/",
+      "BOOKSLibraryMODELS\\": "app/Models/",
+      "BOOKSLibraryVIEWS\\": "app/Views/"
     }
   },
   "require-dev": {

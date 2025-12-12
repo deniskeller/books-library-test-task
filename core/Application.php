@@ -6,9 +6,9 @@ class Application
 {
 
 
-  public function kek()
-  {
-    dump('kek');
-    return 'kek2';
-  }
+    public function kek()
+    {
+        dump('kek');
+        return 'kek2';
+    }
 }
