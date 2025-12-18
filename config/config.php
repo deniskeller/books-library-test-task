@@ -20,3 +20,6 @@ const PATH = 'https://library';
 const HELPERS = ROOT . '/helpers';
 
 require_once HELPERS . '/functions.php';
+require_once CONFIG . '/routes.php';
+require_once CORE . '/router.php';
+

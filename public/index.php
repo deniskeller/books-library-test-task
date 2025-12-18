@@ -9,15 +9,6 @@ require_once __DIR__ . '/../config/config.php';
 require_once ROOT . '/vendor/autoload.php';
 
 
-$uri = trim($_SERVER['REQUEST_URI'], '/');
-//dd($uri);
-
-if ($uri == '') {
-    require_once CONTROLLERS . '/BooksController.php';
-} elseif ($uri == 'authors') {
-    require_once CONTROLLERS . '/AuthorsController.php';
-} else {
-    abort(404);
-}
+$uri = trim(parse_url($_SERVER['REQUEST_URI'])['path'], '/');
 
 //dump("Time:" . microtime(true) - $start_app);
