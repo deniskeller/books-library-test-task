@@ -1,5 +1,5 @@
 <?php
-
+require_once CONFIG . '/routes.php';
 //class Router
 //{
 //}
