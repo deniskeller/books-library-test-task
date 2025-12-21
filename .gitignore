@@ -4,6 +4,7 @@
 # Файлы окружения
 .env
 .env.local
+.env.example
 .env.production
 
 # Системные файлы
