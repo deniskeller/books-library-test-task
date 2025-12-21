@@ -3,7 +3,6 @@
 namespace database;
 class Database
 {
-
     private $pdo;
 
     public function __construct(

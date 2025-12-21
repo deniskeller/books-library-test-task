@@ -9,19 +9,23 @@ if (PHP_MAJOR_VERSION < 8) {
 }
 
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/database.php';
 require_once ROOT . '/vendor/autoload.php';
 require_once ROOT . '/database/Database.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-$driver = $_ENV['DB_DRIVER'];
-$host = $_ENV['DB_HOST'];
-$database = $_ENV['DB_DATABASE'];
-$username = $_ENV['DB_USERNAME'];
-$password = $_ENV['DB_PASSWORD'];
+$database_config = require ROOT . '/config/database.php';
+$connectionConfig = $database_config['connections']['mysql'];
 
-$db = new Database($driver, $host, $database, 'utf8mb4', $username);
+$db = new Database($connectionConfig['driver'],
+    $connectionConfig['host'],
+    $connectionConfig['database'],
+    $connectionConfig['charset'],
+    $connectionConfig['username'],
+    $connectionConfig['password']);
+
 dump($db);
 
 //try {
