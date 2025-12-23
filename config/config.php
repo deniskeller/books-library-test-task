@@ -1,13 +1,6 @@
 <?php
 
 define("ROOT", dirname(__DIR__));
-//define("PUBLIC", ROOT . '/public');
-//define("CORE", ROOT . '/core');
-//define("APP", ROOT . '/app');
-//define("CONTROLLERS", APP . '/controllers');
-//define("MODELS", APP . '/models');
-//define("VIEWS", APP . '/views');
-//define("PATH", 'https://library');
 const CONFIG = ROOT . '/config';
 const PUBLIC_HTML = ROOT . '/public';
 const CORE = ROOT . '/core';
@@ -19,7 +12,7 @@ const COMPONENTS = VIEWS . '/components';
 const PATH = 'https://library';
 const HELPERS = ROOT . '/helpers';
 
-require_once HELPERS . '/functions.php';
+require HELPERS . '/functions.php';
 
-require_once CORE . '/router.php';
+require CORE . '/router.php';
 

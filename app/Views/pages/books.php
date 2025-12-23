@@ -3,7 +3,6 @@ require_once CONTROLLERS . '/BooksController.php';
 require_once COMPONENTS . '/header.php';
 ?>
 
-<main class="container main">
     <div class="row mb-40">
         <div class="col-md-8 col-lg-9">
             <form class="row g-3">
@@ -68,12 +67,8 @@ require_once COMPONENTS . '/header.php';
             </button>
         </div>
     </div>
-</main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
-</body>
-</html>
+<?php
+require_once COMPONENTS . '/footer.php';
+?>

@@ -1,9 +1,14 @@
 <?php
 
 namespace database;
+
+use PDO;
+use PDOException;
+use PDOStatement;
+
 class Database
 {
-    private $pdo;
+    private ?PDO $pdo = null;
 
     public function __construct(
         private string $driver = 'mysql',
@@ -15,24 +20,20 @@ class Database
         private array  $options = []
     )
     {
-    }
+        $defaultOptions = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
 
-    public function fetchAll(string $sql, array $params = []): array
-    {
-        return $this->query($sql, $params)->fetchAll();
-    }
-
-    public function query(string $sql, array $params = []): PDOStatement
-    {
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
+        $this->options = array_merge($defaultOptions, $options);
     }
 
     public function connect(): PDO
     {
         if ($this->pdo === null) {
             $dsn = "{$this->driver}:host={$this->host};dbname={$this->database};charset={$this->charset}";
+
 
             try {
                 $this->pdo = new PDO($dsn, $this->username, $this->password, $this->options);
@@ -44,10 +45,28 @@ class Database
         return $this->pdo;
     }
 
+    public function query(string $sql, array $params = []): PDOStatement
+    {
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
     public function fetchOne(string $sql, array $params = []): ?array
     {
         return $this->query($sql, $params)->fetch() ?: null;
     }
+
+    public function fetchAll(string $sql, array $params = []): array
+    {
+        return $this->query($sql, $params)->fetchAll();
+    }
+
+    public function fetchColumn(string $sql, array $params = []): mixed
+    {
+        return $this->query($sql, $params)->fetchColumn();
+    }
+
 
     public function insert(string $table, array $data): int
     {
@@ -92,7 +111,6 @@ class Database
         $sql = "SELECT COUNT(*) FROM {$table} WHERE {$where}";
         return $this->fetchColumn($sql, $params) > 0;
     }
-
 
     public function __destruct()
     {
