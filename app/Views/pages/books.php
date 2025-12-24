@@ -1,5 +1,5 @@
 <?php
-require_once CONTROLLERS . '/BooksController.php';
+require_once CONTROLLERS . '/BookController.php';
 require_once COMPONENTS . '/header.php';
 ?>
 

@@ -1,6 +1,7 @@
 <?php
-require_once CONTROLLERS . '/AuthorsController.php';
+require_once CONTROLLERS . '/AuthorController.php';
 require_once COMPONENTS . '/header.php';
+$authors = $allAuthors ?? [];
 ?>
 
 
@@ -17,21 +18,24 @@ require_once COMPONENTS . '/header.php';
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th>1</th>
-                    <td>Александр Сергеевич Пушкин</td>
-                    <td>1833</td>
-                    <td>
-                        <div class="action-buttons">
-                            <a href="#" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-pencil"></i> Редактировать
-                            </a>
-                            <button type="button" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-trash"></i> Удалить
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                <?php foreach ($authors as $author) : ?>
+                    <tr>
+                        <th>1</th>
+                        <td><?= $author['name'] ?></td>
+                        <td>1833</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="#" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i> Редактировать
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Удалить
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
                 </tbody>
             </table>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
 $routes = [
-    '' => 'BooksController.php',
-    'authors' => 'AuthorsController.php',
+    '' => 'BookController.php',
+    'authors' => 'AuthorController.php',
 ];

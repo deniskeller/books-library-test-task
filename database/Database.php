@@ -1,124 +1,54 @@
 <?php
 
-namespace database;
+namespace BOOKSLibraryDATABASE;
 
 use PDO;
 use PDOException;
-use PDOStatement;
 
 class Database
 {
-    private ?PDO $pdo = null;
+    private static ?Database $instance = null;
+    private ?PDO $connection = null;
+    private array $config = [];
+    private array $options = [];
 
-    public function __construct(
-        private string $driver = 'mysql',
-        private string $host,
-        private string $database,
-        private string $charset = 'utf8mb4',
-        private string $username,
-        private string $password = '',
-        private array  $options = []
-    )
+    private function __construct()
     {
+        $this->config = require ROOT . '/config/database.php';
+        $connectionConfig = $this->config['connections']['mysql'];
+
         $defaultOptions = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_EMULATE_PREPARES => false
         ];
 
-        $this->options = array_merge($defaultOptions, $options);
-    }
+        $this->options = array_merge(
+            $defaultOptions,
+            $connectionConfig['options'] ?? []
+        );
 
-    public function connect(): PDO
-    {
-        if ($this->pdo === null) {
-            $dsn = "{$this->driver}:host={$this->host};dbname={$this->database};charset={$this->charset}";
+        try {
+            $dsn = "{$connectionConfig['driver']}:host={$connectionConfig['host']};dbname={$connectionConfig['database']};charset={$connectionConfig['charset']}";
 
+            $this->connection = new PDO(
+                $dsn,
+                $connectionConfig['username'],
+                $connectionConfig['password'],
+                $this->options
+            );
 
-            try {
-                $this->pdo = new PDO($dsn, $this->username, $this->password, $this->options);
-            } catch (PDOException $e) {
-                throw new PDOException("Ошибка подключения к базе данных: " . $e->getMessage());
-            }
+        } catch (PDOException $e) {
+            error_log('Ошибка подключения к базе данных: ' . $e->getMessage());
+            throw new PDOException("Ошибка подключения к базе данных. Проверьте конфигрурацию.", 0, $e);
         }
-
-        return $this->pdo;
     }
 
-    public function query(string $sql, array $params = []): PDOStatement
+    public static function getInstance(): ?PDO
     {
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
-    }
-
-    public function fetchOne(string $sql, array $params = []): ?array
-    {
-        return $this->query($sql, $params)->fetch() ?: null;
-    }
-
-    public function fetchAll(string $sql, array $params = []): array
-    {
-        return $this->query($sql, $params)->fetchAll();
-    }
-
-    public function fetchColumn(string $sql, array $params = []): mixed
-    {
-        return $this->query($sql, $params)->fetchColumn();
-    }
-
-
-    public function insert(string $table, array $data): int
-    {
-        $columns = implode(', ', array_keys($data));
-        $placeholders = implode(', ', array_fill(0, count($data), '?'));
-
-        $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
-        $this->query($sql, array_values($data));
-
-        return (int)$this->connect()->lastInsertId();
-    }
-
-    public function update(string $table, array $data, string $where, array $whereParams = []): int
-    {
-        $set = [];
-        $params = [];
-
-        foreach ($data as $column => $value) {
-            $set[] = "{$column} = ?";
-            $params[] = $value;
+        if (!self::$instance) {
+            self::$instance = new Database();
         }
-
-        $setClause = implode(', ', $set);
-        $params = array_merge($params, $whereParams);
-
-        $sql = "UPDATE {$table} SET {$setClause} WHERE {$where}";
-        $stmt = $this->query($sql, $params);
-
-        return $stmt->rowCount();
-    }
-
-    public function delete(string $table, string $where, array $whereParams = []): int
-    {
-        $sql = "DELETE FROM {$table} WHERE {$where}";
-        $stmt = $this->query($sql, $whereParams);
-
-        return $stmt->rowCount();
-    }
-
-    public function exists(string $table, string $where, array $params = []): bool
-    {
-        $sql = "SELECT COUNT(*) FROM {$table} WHERE {$where}";
-        return $this->fetchColumn($sql, $params) > 0;
-    }
-
-    public function __destruct()
-    {
-        $this->close();
-    }
-
-    public function close(): void
-    {
-        $this->pdo = null;
+        return self::$instance->connection;
     }
 }

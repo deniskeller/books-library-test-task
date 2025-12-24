@@ -1,6 +1,6 @@
 <?php
 
-use database\Database;
+use BOOKSLibraryMODELS\Author;
 
 $start_app = microtime(true);
 
@@ -16,28 +16,9 @@ require ROOT . '/database/Database.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
-$database_config = require ROOT . '/config/database.php';
-$connectionConfig = $database_config['connections']['mysql'];
 
-$db = new Database($connectionConfig['driver'],
-    $connectionConfig['host'],
-    $connectionConfig['database'],
-    $connectionConfig['charset'],
-    $connectionConfig['username'],
-    $connectionConfig['password'],
-    $connectionConfig['options']);
+$authors = new Author();
 
-$connection = $db->connect();
-
-dump($connection);
-
-try {
-    $db->insert('authors', [
-        'name' => 'Лермонтов Михаил Юрьевич',
-    ]);
-
-} catch (PDOException $e) {
-    echo "Ошибка базы данных: " . $e->getMessage();
-}
+require CORE . '/router.php';
 
 //dump("Time:" . microtime(true) - $start_app);

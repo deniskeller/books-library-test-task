@@ -14,5 +14,5 @@ const HELPERS = ROOT . '/helpers';
 
 require HELPERS . '/functions.php';
 
-require CORE . '/router.php';
+//require CORE . '/router.php';
 
