@@ -44,11 +44,82 @@ class Database
         }
     }
 
-    public static function getInstance(): ?PDO
+    public static function getInstance(): ?Database
     {
         if (!self::$instance) {
             self::$instance = new Database();
         }
-        return self::$instance->connection;
+        return self::$instance;
+    }
+
+    public function getConnection(): ?PDO
+    {
+        return $this->connection;
+    }
+
+    public function query(string $sql, array $params = []): bool|\PDOStatement
+    {
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    public function fetchAll(string $sql, array $params = []): array
+    {
+        return $this->query($sql, $params)->fetchAll();
+    }
+
+    public function fetch(string $sql, array $params = [])
+    {
+        return $this->query($sql, $params)->fetch();
+    }
+
+    public function fetchColumn(string $sql, array $params = []): mixed
+    {
+        return $this->query($sql, $params)->fetchColumn();
+    }
+
+    public function insert(string $table, array $data): int
+    {
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+
+        $sql = "INSERT INTO {$table} ({$columns}) VALUES ({$placeholders})";
+        $this->query($sql, array_values($data));
+
+        return (int)$this->connection->lastInsertId();
+    }
+
+    public function update(string $table, array $data, string $where, array $whereParams = []): int
+    {
+        $set = [];
+        $params = [];
+
+        foreach ($data as $column => $value) {
+            $set[] = "{$column} = ?";
+            $params[] = $value;
+        }
+
+        $setClause = implode(', ', $set);
+        $params = array_merge($params, $whereParams);
+
+        $sql = "UPDATE {$table} SET {$setClause} WHERE {$where}";
+        $stmt = $this->query($sql, $params);
+
+        return $stmt->rowCount();
+    }
+
+    public function delete(string $table, string $where, array $whereParams = []): int
+    {
+        $sql = "DELETE FROM {$table} WHERE {$where}";
+        $stmt = $this->query($sql, $whereParams);
+
+        return $stmt->rowCount();
+    }
+
+    public function exists(string $table, string $where, array $params = []): bool
+    {
+        $sql = "SELECT COUNT(*) FROM {$table} WHERE {$where}";
+        return $this->fetchColumn($sql, $params) > 0;
     }
 }

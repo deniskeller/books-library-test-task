@@ -1,10 +1,12 @@
 <?php
-$title = 'Страница книг';
-//namespace BOOKSLibraryCONTROLLERS;
-//
-//class BooksController
-//{
-//
-//}
 
-require_once VIEWS . '/pages/books.php';
+namespace BOOKSLibraryCONTROLLERS;
+
+class BookController
+{
+    public function index()
+    {
+        require_once VIEWS . '/pages/books/index.php';
+    }
+}
+

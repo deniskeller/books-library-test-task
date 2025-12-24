@@ -1,9 +1,13 @@
 <?php
 require_once CONTROLLERS . '/AuthorController.php';
 require_once COMPONENTS . '/header.php';
-$authors = $allAuthors ?? [];
-?>
 
+$allAuthors = new \BOOKSLibraryMODELS\Author();
+$authors = $allAuthors->getAllAuthors() ?? [];
+
+$currentAuthor = $allAuthors->getById(1);
+dump($currentAuthor['name']);
+?>
 
 <div class="row">
     <div class="col-12">
