@@ -1,12 +1,5 @@
 <?php
-require_once CONTROLLERS . '/AuthorController.php';
 require_once COMPONENTS . '/header.php';
-
-$allAuthors = new \BOOKSLibraryMODELS\Author();
-$authors = $allAuthors->getAllAuthors() ?? [];
-
-$currentAuthor = $allAuthors->getById(1);
-dump($currentAuthor['name']);
 ?>
 
 <div class="row">
@@ -29,7 +22,8 @@ dump($currentAuthor['name']);
                         <td>1833</td>
                         <td>
                             <div class="action-buttons">
-                                <a href="#" class="btn btn-sm btn-outline-primary">
+                                <a href="/authors/edit?id=<?= $author['id'] ?>"
+                                   class="btn btn-sm btn-outline-primary">
                                     <i class="bi bi-pencil"></i> Редактировать
                                 </a>
                                 <button type="button" class="btn btn-sm btn-outline-danger">
