@@ -25,9 +25,8 @@ class AuthorController
         $author = $this->authorModel->getById($id);
 
         if (!$author) {
-            dump('authorNotFound');
             $_SESSION['error'] = 'Автор не найден';
-            header('Location: ?action=authors');
+            header('Location: /authors');
             exit;
         }
 
@@ -60,7 +59,6 @@ class AuthorController
         }
     }
 
-
     #[NoReturn]
     public function destroy($id): void
     {
@@ -72,5 +70,26 @@ class AuthorController
 
         header('Location: /authors');
         exit;
+    }
+
+    public function update($id): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = trim($_POST['name']);
+
+            if (empty($name)) {
+                $_SESSION['error'] = 'ФИО автора обязательно';
+                header('Location: /authors/edit?id=' . $id);
+                exit;
+            }
+
+            if ($this->authorModel->update($id, $name)) {
+                $_SESSION['success'] = 'Автор успешно обновлен';
+                header('Location: /authors');
+                exit;
+            } else {
+                $_SESSION['error'] = 'Ошибка при обновлении автора';
+            }
+        }
     }
 }

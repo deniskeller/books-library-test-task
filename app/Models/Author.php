@@ -36,4 +36,9 @@ class Author
     {
         return $this->db->delete('authors', 'id = :id', ['id' => $id]);
     }
+
+    public function update($id, $name): int
+    {
+        return $this->db->update('authors', ['name' => $name], 'id = ?', [$id]);
+    }
 }

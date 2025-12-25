@@ -90,25 +90,6 @@ class Database
         return (int)$this->connection->lastInsertId();
     }
 
-    public function update(string $table, array $data, string $where, array $whereParams = []): int
-    {
-        $set = [];
-        $params = [];
-
-        foreach ($data as $column => $value) {
-            $set[] = "{$column} = ?";
-            $params[] = $value;
-        }
-
-        $setClause = implode(', ', $set);
-        $params = array_merge($params, $whereParams);
-
-        $sql = "UPDATE {$table} SET {$setClause} WHERE {$where}";
-        $stmt = $this->query($sql, $params);
-
-        return $stmt->rowCount();
-    }
-
     public function delete(string $table, string $where, array $whereParams = []): int
     {
         $sql = "DELETE FROM {$table} WHERE {$where}";
@@ -121,5 +102,23 @@ class Database
     {
         $sql = "SELECT COUNT(*) FROM {$table} WHERE {$where}";
         return $this->fetchColumn($sql, $params) > 0;
+    }
+
+    public function update(string $table, array $data, string $where, array $whereParams = []): int
+    {
+        $set = [];
+        $params = [];
+        foreach ($data as $column => $value) {
+            $set[] = "{$column} = ?";
+            $params[] = $value;
+        }
+
+        $setClause = implode(', ', $set);
+        $params = array_merge($params, $whereParams);
+
+        $sql = "UPDATE {$table} SET {$setClause} WHERE {$where}";
+        $stmt = $this->query($sql, $params);
+
+        return $stmt->rowCount();
     }
 }
