@@ -30,7 +30,7 @@ require_once COMPONENTS . '/header.php';
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-pencil"></i> Редактировать
                                     </a>
-                                    <a href="/authors/delete?id=<?= $author['id'] ?>"
+                                    <a href="/authors/destroy?id=<?= $author['id'] ?>"
                                        class="btn btn-sm btn-outline-danger"
                                        onclick="return confirm('Удалить этого автора?')">
                                         <i class="bi bi-trash"></i> Удалить

@@ -3,6 +3,7 @@
 namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryMODELS\Author;
+use JetBrains\PhpStorm\NoReturn;
 
 class AuthorController
 {
@@ -15,7 +16,7 @@ class AuthorController
 
     public function index(): void
     {
-        $authors = $this->authorModel->getAllAuthors();
+        $authors = $this->authorModel->getAll();
         require VIEWS . '/pages/authors/index.php';
     }
 
@@ -57,5 +58,19 @@ class AuthorController
                 $_SESSION['error'] = 'Ошибка при добавлении автора';
             }
         }
+    }
+
+
+    #[NoReturn]
+    public function destroy($id): void
+    {
+        if ($this->authorModel->deleteById($id)) {
+            $_SESSION['success'] = 'Автор успешно удален';
+        } else {
+            $_SESSION['error'] = 'Ошибка при удалении автора';
+        }
+
+        header('Location: /authors');
+        exit;
     }
 }

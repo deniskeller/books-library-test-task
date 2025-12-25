@@ -17,7 +17,7 @@ class Author
         }
     }
 
-    public function getAllAuthors(): array
+    public function getAll(): array
     {
         return $this->db->fetchAll('SELECT * FROM authors');
     }
@@ -30,5 +30,10 @@ class Author
     public function create($name): int
     {
         return $this->db->insert('authors', ['name' => $name]);
+    }
+
+    public function deleteById($id): int
+    {
+        return $this->db->delete('authors', 'id = :id', ['id' => $id]);
     }
 }
