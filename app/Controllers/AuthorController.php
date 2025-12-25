@@ -13,16 +13,15 @@ class AuthorController
         $this->authorModel = new Author();
     }
 
-    public function index()
+    public function index(): void
     {
         $authors = $this->authorModel->getAllAuthors();
         require VIEWS . '/pages/authors/index.php';
     }
 
-    public function edit($id)
+    public function edit($id): void
     {
         $author = $this->authorModel->getById($id);
-        dump($author);
 
         if (!$author) {
             dump('authorNotFound');
@@ -32,5 +31,31 @@ class AuthorController
         }
 
         require VIEWS . '/pages/authors/edit.php';
+    }
+
+    public function create(): void
+    {
+        require VIEWS . '/pages/authors/edit.php';
+    }
+
+    public function store($name): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = trim($_POST['name']);
+
+            if (empty($name)) {
+                $_SESSION['error'] = 'ФИО автора обязательно';
+                header('Location: /authors/create');
+                exit;
+            }
+
+            if ($this->authorModel->create($name)) {
+                $_SESSION['success'] = 'Автор успешно добавлен';
+                header('Location: /authors');
+                exit;
+            } else {
+                $_SESSION['error'] = 'Ошибка при добавлении автора';
+            }
+        }
     }
 }

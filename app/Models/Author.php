@@ -26,4 +26,9 @@ class Author
     {
         return $this->db->fetch('SELECT * FROM authors WHERE id = :id', ['id' => $id]);
     }
+
+    public function create($name): int
+    {
+        return $this->db->insert('authors', ['name' => $name]);
+    }
 }

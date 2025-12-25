@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $start_app = microtime(true);
 
@@ -17,15 +18,15 @@ $dotenv->load();
 require CONTROLLERS . '/AuthorController.php';
 require CONTROLLERS . '/BookController.php';
 
-dump(parse_url($_SERVER['REQUEST_URI']));
+//dump(parse_url($_SERVER['REQUEST_URI']));
 $url = $_GET['url'] ?? 'books';
 //dump($url);
 $id = $_GET['id'] ?? null;
-dump($id);
+//dump($id);
 $url = trim($url, '/');
 //dump($url);
 $parts = explode('/', $url);
-dump($parts);
+//dump($parts);
 
 $controllerMap = [
     'authors' => 'AuthorController',
