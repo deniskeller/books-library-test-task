@@ -7,6 +7,7 @@ use JetBrains\PhpStorm\NoReturn;
 
 class AuthorController
 {
+    public string $title = 'Страница авторов';
     private Author $authorModel;
 
     public function __construct()
@@ -16,6 +17,7 @@ class AuthorController
 
     public function index(): void
     {
+        $title = $this->title;
         $authors = $this->authorModel->getAll();
         require VIEWS . '/pages/authors/index.php';
     }

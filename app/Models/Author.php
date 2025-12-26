@@ -24,6 +24,8 @@ class Author
 
     public function getById($id)
     {
+        // сделать удаление связи с книгами
+        
         return $this->db->fetch('SELECT * FROM authors WHERE id = :id', ['id' => $id]);
     }
 
@@ -41,4 +43,6 @@ class Author
     {
         return $this->db->update('authors', ['name' => $name], 'id = ?', [$id]);
     }
+
+    // сделать метод вычисления кол-ва книг
 }

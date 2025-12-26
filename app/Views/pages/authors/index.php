@@ -19,9 +19,9 @@ require_once COMPONENTS . '/header.php';
                     <tbody>
 
 
-                    <?php foreach ($authors as $author) : ?>
+                    <?php foreach ($authors as $index => $author) : ?>
                         <tr>
-                            <th>1</th>
+                            <th><?= $index + 1 ?></th>
                             <td><?= $author['name'] ?></td>
                             <td>1833</td>
                             <td>
