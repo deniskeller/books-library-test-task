@@ -42,7 +42,7 @@ require_once COMPONENTS . '/header.php';
                             <tr>
                                 <th><?= $index + 1 ?></th>
                                 <td><?= $book['title'] ?></td>
-                                <td>Александр Сергеевич Пушкин</td>
+                                <td><?= htmlspecialchars($book['author_names'] ?? 'Нет авторов') ?></td>
                                 <td><?= $book['year'] ?></td>
                                 <td>
                                     <div class="action-buttons">

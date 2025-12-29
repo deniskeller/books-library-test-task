@@ -53,23 +53,31 @@ class BookController
         exit;
     }
 
-    public function store($name): void
+    public function store(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name']);
 
-            if (empty($name)) {
-                $_SESSION['error'] = 'ФИО автора обязательно';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = trim($_POST['title']);
+            $year = trim($_POST['year']);
+
+            if (empty($title)) {
+                $_SESSION['error'] = 'Название книги обязательно';
                 header('Location: /books/create');
                 exit;
             }
 
-            if ($this->bookModel->create($name)) {
-                $_SESSION['success'] = 'Автор успешно добавлен';
+            if (empty($year)) {
+                $_SESSION['error'] = 'Дата издания обязательно';
+                header('Location: /books/create');
+                exit;
+            }
+
+            if ($this->bookModel->create($title, $year)) {
+                $_SESSION['success'] = 'Книга успешно добавлена';
                 header('Location: /books');
                 exit;
             } else {
-                $_SESSION['error'] = 'Ошибка при добавлении автора';
+                $_SESSION['error'] = 'Ошибка при добавлении книги';
             }
         }
     }
@@ -77,20 +85,27 @@ class BookController
     public function update($id): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name']);
+            $title = trim($_POST['title']);
+            $year = trim($_POST['year']);
 
-            if (empty($name)) {
-                $_SESSION['error'] = 'ФИО автора обязательно';
-                header('Location: /authors/edit?id=' . $id);
+            if (empty($title)) {
+                $_SESSION['error'] = 'Название книги обязательно';
+                header('Location: /books/edit?id=' . $id);
                 exit;
             }
 
-            if ($this->bookModel->update($id, $name)) {
-                $_SESSION['success'] = 'Автор успешно обновлен';
-                header('Location: /authors');
+            if (empty($year)) {
+                $_SESSION['error'] = 'Дата издания обязательно';
+                header('Location: /books/edit?id=' . $id);
+                exit;
+            }
+
+            if ($this->bookModel->update($id, $title, $year)) {
+                $_SESSION['success'] = 'Книга успешно добавлена';
+                header('Location: /books');
                 exit;
             } else {
-                $_SESSION['error'] = 'Ошибка при обновлении автора';
+                $_SESSION['error'] = 'Ошибка при обновлении книги';
             }
         }
     }

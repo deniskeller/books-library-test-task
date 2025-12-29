@@ -40,7 +40,7 @@ class AuthorController
         require VIEWS . '/pages/authors/edit.php';
     }
 
-    public function store($name): void
+    public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name']);

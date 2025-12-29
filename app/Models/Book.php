@@ -29,9 +29,12 @@ class Book
         return $this->db->fetch('SELECT * FROM books WHERE id = :id', ['id' => $id]);
     }
 
-    public function create($name): int
+    public function create($title, $year): int
     {
-        return $this->db->insert('books', ['name' => $name]);
+        $data = [
+            'title' => $title, 'year' => $year
+        ];
+        return $this->db->insert('books', $data);
     }
 
     public function deleteById($id): int
@@ -39,8 +42,8 @@ class Book
         return $this->db->delete('books', 'id = :id', ['id' => $id]);
     }
 
-    public function update($id, $name): int
+    public function update($id, $title, $year): int
     {
-        return $this->db->update('books', ['name' => $name], 'id = ?', [$id]);
+        return $this->db->update('books', ['title' => $title, 'year' => $year], 'id = ?', [$id]);
     }
 }
