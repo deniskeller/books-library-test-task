@@ -32,6 +32,7 @@ function print_array($array): void
 }
 
 
+// функция создания таблицы
 function createTableIfNotExists($pdo, $table_name, $sql_create_table)
 {
     try {
@@ -59,3 +60,29 @@ function createTableIfNotExists($pdo, $table_name, $sql_create_table)
         ];
     }
 }
+
+//обработка входящего массива полей из формы
+function loadDataFormFields($fillable = []): array
+{
+//    $data = [];
+//
+//    foreach ($_POST as $key => $value) {
+//        if (in_array($key, $fillable)) {
+//            $data[$key] = $value;
+//        }
+//
+//    }
+//    return $data;
+
+    return array_filter($_POST, function ($key) use ($fillable) {
+        return in_array($key, $fillable);
+    }, ARRAY_FILTER_USE_KEY);
+}
+
+
+//вывод значения в поле ввода
+function oldFieldValue($fieldName): string
+{
+    return isset($_POST[$fieldName]) ? htmlspecialchars($_POST[$fieldName]) : '';
+}
+
