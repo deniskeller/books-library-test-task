@@ -1,5 +1,4 @@
 <?php
-require_once CONTROLLERS . '/BookController.php';
 require_once COMPONENTS . '/header.php';
 ?>
 
@@ -27,44 +26,53 @@ require_once COMPONENTS . '/header.php';
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Название книги</th>
-                        <th>Автор(ы)</th>
-                        <th>Год издания</th>
-                        <th>Действия</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>1</th>
-                        <td>Евгений Онегин</td>
-                        <td>Александр Сергеевич Пушкин</td>
-                        <td>1833</td>
-                        <td>
-                            <div class="action-buttons">
-                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-pencil"></i> Редактировать
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Удалить
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <?php if (!empty($books)) : ?>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Название книги</th>
+                            <th>Автор(ы)</th>
+                            <th>Год издания</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($books as $index => $book) : ?>
+                            <tr>
+                                <th><?= $index + 1 ?></th>
+                                <td><?= $book['title'] ?></td>
+                                <td>Александр Сергеевич Пушкин</td>
+                                <td><?= $book['year'] ?></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="/books/edit?id=<?= $book['id'] ?>"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i> Редактировать
+                                        </a>
+                                        <a href="/books/destroy?id=<?= $book['id'] ?>"
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Удалить этого автора?')">
+                                            <i class="bi bi-trash"></i> Удалить
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else : ?>
+                    <div class="emtry">Список книг пуст</div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
     <div class="row mt-4">
         <div class="col-12">
-            <button type="button" class="btn btn-success">
+            <a href="books/create" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Добавить новую книгу
-            </button>
+            </a>
         </div>
     </div>
 

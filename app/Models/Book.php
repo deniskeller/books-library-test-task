@@ -2,42 +2,45 @@
 
 namespace BOOKSLibraryMODELS;
 
+use BOOKSLibraryDATABASE\Database;
+
 class Book
 {
 
+    private Database $db;
 
-    public function __construct(
-        public string  $title = 'Some text',
-        public int     $price = 0,
-        private string $private = 'private'
-    )
+    public function __construct()
     {
+        $this->db = Database::getInstance();
+
+        if (!$this->db->getConnection()) {
+            throw new \RuntimeException('Нет подключения к базе данных');
+        }
     }
 
-    public function setCurrency($currency = "RUB"): string
+    public function getAll(): array
     {
-        return $this->getRealPrice() . "$currency";
+        return $this->db->fetchAll('SELECT * FROM books');
     }
 
-    public function getRealPrice(): int|float
+    public function getById($id)
     {
-        return $this->price / 100;
+        // сделать удаление связи с авторами
+        return $this->db->fetch('SELECT * FROM books WHERE id = :id', ['id' => $id]);
     }
 
-
-    public function getInfo(): string
+    public function create($name): int
     {
-        return 'info about book: ' . PHP_EOL . 'title: ' . $this->title . PHP_EOL . 'price: ' . $this->price;
+        return $this->db->insert('books', ['name' => $name]);
     }
 
-    public function getPrivate(): string
+    public function deleteById($id): int
     {
-//        dump($this);
-        return $this->private;
+        return $this->db->delete('books', 'id = :id', ['id' => $id]);
     }
 
-    public function setPrivate(string $private): void
+    public function update($id, $name): int
     {
-        $this->private = $private;
+        return $this->db->update('books', ['name' => $name], 'id = ?', [$id]);
     }
 }
