@@ -2,6 +2,7 @@
 
 namespace BOOKSLibraryCONTROLLERS;
 
+use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -9,22 +10,27 @@ class BookController
 {
     public string $title = 'Страница книг';
     private Book $bookModel;
+    private Author $authorModel;
 
     public function __construct()
     {
         $this->bookModel = new Book();
+        $this->authorModel = new Author();
     }
 
     public function index(): void
     {
         $title = $this->title;
         $books = $this->bookModel->getAll();
+        $authors = $this->authorModel->getAll();
+
         require VIEWS . '/pages/books/index.php';
     }
 
     public function edit($id): void
     {
         $book = $this->bookModel->getById($id);
+        $authors = $this->authorModel->getAll();
 
         if (!$book) {
             $_SESSION['error'] = 'Книга не найдена';

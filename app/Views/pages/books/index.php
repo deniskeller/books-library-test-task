@@ -7,11 +7,14 @@ require_once COMPONENTS . '/header.php';
             <form class="row g-3">
                 <div class="col-md-8">
                     <label for="authorFilter" class="form-label">Фильтр по автору</label>
+
                     <select id="authorFilter" name="book-filter-author" class="form-select">
                         <option selected value="">Все авторы</option>
-                        <option value="1">Александр Сергеевич Пушкин</option>
-                        <option value="2">Лев Николаевич Толстой</option>
-                        <option value="3">Фёдор Михайлович Достоевский</option>
+                        <?php if (!empty($authors)) : ?>
+                            <?php foreach ($authors as $author) : ?>
+                                <option value="1"><?= htmlspecialchars($author['name']) ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </select>
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
