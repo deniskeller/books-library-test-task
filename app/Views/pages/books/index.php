@@ -1,5 +1,6 @@
 <?php
 require_once COMPONENTS . '/header.php';
+dump($books);
 ?>
 
     <div class="row mb-40">
@@ -12,7 +13,7 @@ require_once COMPONENTS . '/header.php';
                         <option selected value="">Все авторы</option>
                         <?php if (!empty($authors)) : ?>
                             <?php foreach ($authors as $author) : ?>
-                                <option value="1"><?= htmlspecialchars($author['name']) ?></option>
+                                <option value="<?= $author['id'] ?>"><?= htmlspecialchars($author['name']) ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
@@ -45,7 +46,7 @@ require_once COMPONENTS . '/header.php';
                             <tr>
                                 <th><?= $index + 1 ?></th>
                                 <td><?= $book['title'] ?></td>
-                                <td><?= htmlspecialchars($book['author_names'] ?? 'Нет авторов') ?></td>
+                                <td><?= htmlspecialchars($book['authors'] ?? 'Нет авторов') ?></td>
                                 <td><?= $book['year'] ?></td>
                                 <td>
                                     <div class="action-buttons">

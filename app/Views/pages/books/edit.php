@@ -19,17 +19,18 @@ require_once COMPONENTS . '/header.php';
                    value="<?= isset($book) ? htmlspecialchars($book['year']) : '' ?>" required>
         </div>
 
-        <div class="mb-3">
-            <label for="authors" class="form-label">Авторы *</label>
-            <select multiple class="form-control" id="authors" name="authors[]" required size="1">
-                <?php if (!empty($authors)) : ?>
+        <?php if (!empty($authors)) : ?>
+            <div class="mb-3">
+                <label for="$authors_ids" class="form-label">Авторы</label>
+                <select multiple class="form-control" id="$authors_ids" name="$authors_ids[]" size="1">
                     <?php foreach ($authors as $author) : ?>
-                        <option value="1"><?= htmlspecialchars($author['name']) ?></option>
+                        <option value="<?= $author['id'] ?>">
+                            <?= htmlspecialchars($author['name']) ?></option>
                     <?php endforeach; ?>
-                <?php endif; ?>
-            </select>
-            <div class="form-text">Для выбора нескольких авторов удерживайте Ctrl</div>
-        </div>
+                </select>
+                <div class="form-text">Для выбора нескольких авторов удерживайте Ctrl</div>
+            </div>
+        <?php endif; ?>
 
         <button type="submit" class="btn btn-primary">
             <?= isset($book) ? 'Сохранить' : 'Добавить' ?>

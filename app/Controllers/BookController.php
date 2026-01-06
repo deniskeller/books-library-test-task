@@ -21,7 +21,8 @@ class BookController
     public function index(): void
     {
         $title = $this->title;
-        $books = $this->bookModel->getAll();
+        $authorFilter = $_GET['book-filter-author'] ?? null;
+        $books = $this->bookModel->getAll((int)$authorFilter);
         $authors = $this->authorModel->getAll();
 
         require VIEWS . '/pages/books/index.php';
@@ -43,6 +44,7 @@ class BookController
 
     public function create(): void
     {
+        $authors = $this->authorModel->getAll();
         require VIEWS . '/pages/books/edit.php';
     }
 
@@ -61,10 +63,11 @@ class BookController
 
     public function store(): void
     {
-
+//        dump('store');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
+            $authors_ids = $_POST['$authors_ids'] ?? [];
 
             if (empty($title)) {
                 $_SESSION['error'] = 'Название книги обязательно';
@@ -78,7 +81,13 @@ class BookController
                 exit;
             }
 
-            if ($this->bookModel->create($title, $year)) {
+            if (empty($authors_ids)) {
+                $_SESSION['error'] = 'Выберите одного или нескотльких авторов';
+                header('Location: /books/create');
+                exit;
+            }
+
+            if ($this->bookModel->create($title, $year, $authors_ids)) {
                 $_SESSION['success'] = 'Книга успешно добавлена';
                 header('Location: /books');
                 exit;
@@ -93,6 +102,7 @@ class BookController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
+            $authors = $_POST['authors'] ?? [];
 
             if (empty($title)) {
                 $_SESSION['error'] = 'Название книги обязательно';
@@ -102,6 +112,12 @@ class BookController
 
             if (empty($year)) {
                 $_SESSION['error'] = 'Дата издания обязательно';
+                header('Location: /books/edit?id=' . $id);
+                exit;
+            }
+
+            if (empty($authors)) {
+                $_SESSION['error'] = 'Выберите одного или нескотльких авторов';
                 header('Location: /books/edit?id=' . $id);
                 exit;
             }
