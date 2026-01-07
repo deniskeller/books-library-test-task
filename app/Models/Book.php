@@ -4,6 +4,7 @@ namespace BOOKSLibraryMODELS;
 
 use BOOKSLibraryDATABASE\Database;
 use Exception;
+use PDOException;
 
 class Book
 {
@@ -15,7 +16,7 @@ class Book
         $this->db = Database::getInstance();
 
         if (!$this->db->getConnection()) {
-            throw new \RuntimeException('Нет подключения к базе данных');
+            throw new PDOException('Нет подключения к базе данных');
         }
     }
 
@@ -87,6 +88,7 @@ class Book
 
             return true;
         } catch (Exception $e) {
+            error_log('Ошибка редактирования книги: ' . $e->getMessage());
             return false;
         }
     }
