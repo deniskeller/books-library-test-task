@@ -19,7 +19,6 @@ class AuthorController
     {
         $title = $this->title;
         $authors = $this->authorModel->getAll();
-        dump($authors);
         require VIEWS . '/pages/authors/index.php';
     }
 

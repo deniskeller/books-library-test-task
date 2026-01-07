@@ -3,6 +3,7 @@
 namespace BOOKSLibraryMODELS;
 
 use BOOKSLibraryDATABASE\Database;
+use Exception;
 
 class Book
 {
@@ -77,13 +78,17 @@ class Book
 
     public function update($id, $title, $year, $authors_ids = []): int
     {
-        $bookId = $this->db->update('books', ['title' => $title, 'year' => $year], 'id = ?', [$id]);
+        try {
+            $this->db->update('books', ['title' => $title, 'year' => $year], 'id = ?', [$id]);
 //        удаляем старые связи
-        $this->removeAllAuthorsFromBook($id);
-        // добавляетм новые связи
-        $this->addAuthorsToBook($id, $authors_ids);
+            $this->removeAllAuthorsFromBook($id);
+            // добавляетм новые связи
+            $this->addAuthorsToBook($id, $authors_ids);
 
-        return $bookId;
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     private function addAuthorsToBook($book_id, $author_ids): void

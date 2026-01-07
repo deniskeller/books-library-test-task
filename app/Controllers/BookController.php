@@ -108,6 +108,7 @@ class BookController
 
     public function update($id): void
     {
+//        dump('update');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
