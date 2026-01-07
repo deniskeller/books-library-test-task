@@ -1,5 +1,15 @@
 <?php
 require_once COMPONENTS . '/header.php';
+
+$selectedAuthorIds = [];
+
+if (isset($_POST['authors_ids'])) {
+    $selectedAuthorIds = $_POST['authors_ids'];
+} elseif (isset($book['authors'])) {
+    foreach ($book['authors'] as $author) {
+        $selectedAuthorIds[] = $author['id'];
+    }
+}
 ?>
 
 
@@ -24,7 +34,7 @@ require_once COMPONENTS . '/header.php';
                 <label for="$authors_ids" class="form-label">Авторы</label>
                 <select multiple class="form-control" id="$authors_ids" name="$authors_ids[]" size="1">
                     <?php foreach ($authors as $author) : ?>
-                        <option value="<?= $author['id'] ?>">
+                        <option value="<?= $author['id'] ?>" <?= in_array($author['id'], $selectedAuthorIds) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($author['name']) ?></option>
                     <?php endforeach; ?>
                 </select>

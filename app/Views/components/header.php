@@ -38,10 +38,10 @@
                         <a class="nav-link" href="/authors">Авторы</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Поиск книг..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit">Найти</button>
-                </form>
+                <!--                <form class="d-flex" role="search">-->
+                <!--                    <input class="form-control me-2" type="search" placeholder="Поиск книг..." aria-label="Search">-->
+                <!--                    <button class="btn btn-outline-light" type="submit">Найти</button>-->
+                <!--                </form>-->
             </div>
         </div>
     </nav>

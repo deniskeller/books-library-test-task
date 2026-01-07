@@ -1,6 +1,5 @@
 <?php
 require_once COMPONENTS . '/header.php';
-dump($books);
 ?>
 
     <div class="row mb-40">
