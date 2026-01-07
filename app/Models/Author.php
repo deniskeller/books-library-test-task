@@ -17,15 +17,23 @@ class Author
         }
     }
 
+//    авторы вместе с счетчком книг
     public function getAll(): array
     {
-        return $this->db->fetchAll('SELECT * FROM authors');
+        return $this->db->fetchAll('
+            SELECT 
+                authors.id, 
+                authors.name, 
+                COUNT(book_authors.book_id) as book_counter
+            FROM authors 
+            LEFT JOIN book_authors ON authors.id = book_authors.author_id
+            GROUP BY authors.id
+            ORDER BY authors.name
+        ');
     }
 
     public function getById($id)
     {
-        // сделать удаление связи с книгами
-        
         return $this->db->fetch('SELECT * FROM authors WHERE id = :id', ['id' => $id]);
     }
 
@@ -43,6 +51,4 @@ class Author
     {
         return $this->db->update('authors', ['name' => $name], 'id = ?', [$id]);
     }
-
-    // сделать метод вычисления кол-ва книг
 }

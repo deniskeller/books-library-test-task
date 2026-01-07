@@ -23,7 +23,7 @@ require_once COMPONENTS . '/header.php';
                         <tr>
                             <th><?= $index + 1 ?></th>
                             <td><?= $author['name'] ?></td>
-                            <td>1833</td>
+                            <td><?= $author['book_counter'] ?></td>
                             <td>
                                 <div class="action-buttons">
                                     <a href="/authors/edit?id=<?= $author['id'] ?>"
