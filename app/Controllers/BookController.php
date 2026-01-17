@@ -4,7 +4,6 @@ namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
-use JetBrains\PhpStorm\NoReturn;
 
 class BookController
 {
@@ -57,7 +56,6 @@ class BookController
     }
 
     // удаление книги
-    #[NoReturn]
     public function destroy($id): void
     {
         if ($this->bookModel->deleteById($id)) {
@@ -77,6 +75,9 @@ class BookController
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
             $authors_ids = $_POST['$authors_ids'] ?? [];
+
+            $loadData = loadDataFormFields(['title', 'year']);
+            dd($loadData);
 
             if (empty($title)) {
                 $_SESSION['error'] = 'Название книги обязательно';
@@ -108,7 +109,7 @@ class BookController
 
     public function update($id): void
     {
-//        dump('update');
+        //        dump('update');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
@@ -142,4 +143,3 @@ class BookController
         }
     }
 }
-

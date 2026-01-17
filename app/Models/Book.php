@@ -39,6 +39,7 @@ class Book
 
     public function getAuthorsByBookId($bookId): array
     {
+        // запрос с алиасами
         return $this->db->fetchAll("
             SELECT a.* FROM authors a
             INNER JOIN book_authors ba ON a.id = ba.author_id
@@ -69,7 +70,8 @@ class Book
     public function create($title, $year, $authors_ids): int
     {
         $data = [
-            'title' => $title, 'year' => $year
+            'title' => $title,
+            'year' => $year
         ];
         $book_id = $this->db->insert('books', $data);
         $this->addAuthorsToBook($book_id, $authors_ids);
@@ -81,7 +83,7 @@ class Book
     {
         try {
             $this->db->update('books', ['title' => $title, 'year' => $year], 'id = ?', [$id]);
-//        удаляем старые связи
+            //        удаляем старые связи
             $this->removeAllAuthorsFromBook($id);
             // добавляетм новые связи
             $this->addAuthorsToBook($id, $authors_ids);

@@ -1,7 +1,5 @@
 <?php
 
-use JetBrains\PhpStorm\NoReturn;
-
 function dump_v($data): void
 {
     echo "<pre>";
@@ -9,16 +7,12 @@ function dump_v($data): void
     echo "</pre>";
 }
 
-
-#[NoReturn]
 function dd_v($data): void
 {
     dump_v($data);
     die;
 }
 
-
-#[NoReturn]
 function abort($code = 400): void
 {
     http_response_code($code);
@@ -70,13 +64,12 @@ function loadDataFormFields($fillable = []): array
         if (in_array($key, $fillable)) {
             $data[$key] = trim($value);
         }
-
     }
     return $data;
 
-//    return array_filter($_POST, function ($key) use ($fillable) {
-//        return in_array($key, $fillable);
-//    }, ARRAY_FILTER_USE_KEY);
+    //    return array_filter($_POST, function ($key) use ($fillable) {
+    //        return in_array($key, $fillable);
+    //    }, ARRAY_FILTER_USE_KEY);
 }
 
 
@@ -85,4 +78,3 @@ function oldFieldValue($fieldName): string
 {
     return isset($_POST[$fieldName]) ? htmlspecialchars($_POST[$fieldName], ENT_QUOTES) : '';
 }
-
