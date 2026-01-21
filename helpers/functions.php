@@ -78,3 +78,16 @@ function oldFieldValue($fieldName): string
 {
     return isset($_POST[$fieldName]) ? htmlspecialchars($_POST[$fieldName], ENT_QUOTES) : '';
 }
+
+
+function redirect($url = '')
+{
+    if ($url) {
+        $redirect = $url;
+    } else {
+        $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : PATH;
+    }
+
+    header("Location: {$redirect}");
+    die;
+}

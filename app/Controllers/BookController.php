@@ -76,8 +76,8 @@ class BookController
             $year = trim($_POST['year']);
             $authors_ids = $_POST['$authors_ids'] ?? [];
 
-            $loadData = loadDataFormFields(['title', 'year']);
-            dd($loadData);
+            // $loadData = loadDataFormFields(['title', 'year']);
+            // dd($loadData);
 
             if (empty($title)) {
                 $_SESSION['error'] = 'Название книги обязательно';
@@ -99,8 +99,9 @@ class BookController
 
             if ($this->bookModel->create($title, $year, $authors_ids)) {
                 $_SESSION['success'] = 'Книга успешно добавлена';
-                header('Location: /books');
-                exit;
+                redirect('/books');
+                // header('Location: /books');
+                // exit;
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении книги';
             }
