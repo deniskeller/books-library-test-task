@@ -20,14 +20,17 @@ if (isset($_POST['authors_ids'])) {
         <div class="mb-3">
             <label for="title" class="form-label">Название книги</label>
             <input type="text" class="form-control" id="title" name="title"
-                value="<?= isset($book) ? htmlspecialchars($book['title']) : '' ?>"
-                required>
+                value="<?= isset($book) ? htmlspecialchars($book['title']) : '' ?>">
+
+            <?php if (isset($errors['title'])): ?>
+                <span style="color: red"><?= $errors['title'] ?></span>
+            <?php endif; ?>
         </div>
 
         <div class="mb-3">
             <label for="year" class="form-label">Год издания</label>
             <input type="text" class="form-control" id="year" name="year"
-                value="<?= isset($book) ? htmlspecialchars($book['year']) : '' ?>" required>
+                value="<?= isset($book) ? htmlspecialchars($book['year']) : '' ?>">
         </div>
 
         <?php if (!empty($authors)) : ?>

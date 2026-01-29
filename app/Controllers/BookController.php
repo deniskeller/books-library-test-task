@@ -2,6 +2,7 @@
 
 namespace BOOKSLibraryCONTROLLERS;
 
+use BOOKSLibraryCORE\FormFieldValidator;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 
@@ -10,7 +11,7 @@ class BookController
     public string $title = 'Страница книг';
     private Book $bookModel;
     private Author $authorModel;
-
+    public array $errors = [];
     public function __construct()
     {
         $this->bookModel = new Book();
@@ -76,26 +77,71 @@ class BookController
             $year = trim($_POST['year']);
             $authors_ids = $_POST['$authors_ids'] ?? [];
 
-            // $loadData = loadDataFormFields(['title', 'year']);
-            // dd($loadData);
+            // $formFields = ['title', 'year'];
 
-            if (empty($title)) {
-                $_SESSION['error'] = 'Название книги обязательно';
+            // $loadData = loadDataFormFields($formFields);
+            // dump($loadData);
+            // $validator = new FormFieldValidator();
+            // $validation = $validator->validate($loadData, [
+            //     'title' => [
+            //         'required' => true,
+            //         'min' => 2,
+            //         'max' => 200,
+            //     ],
+            //     'year' => [
+            //         'required' => true,
+            //     ]
+            // ]);
+
+            // $_SESSION['errors'] = [];
+
+            // $_SESSION['errors']['title'] = FormFieldValidator::text($title, [
+            //     'required' => true,
+            //     'minLength' => 2,
+            //     'maxLength' => 10,
+            // ]);
+
+            // if (!empty($_SESSION['errors'])) {
+            //     header('Location: /books/create');
+            //     exit;
+            // }
+
+            $errors = [];
+
+            $errors['title'] = FormFieldValidator::text($title, [
+                'required' => true,
+                'minLength' => 2,
+                'maxLength' => 10,
+            ]);
+
+
+            // dump($_SESSION['errors']);
+            // dd($errors);
+
+            if (!empty($errors['title'])) {
                 header('Location: /books/create');
                 exit;
             }
 
-            if (empty($year)) {
-                $_SESSION['error'] = 'Дата издания обязательно';
-                header('Location: /books/create');
-                exit;
-            }
 
-            if (empty($authors_ids)) {
-                $_SESSION['error'] = 'Выберите одного или нескотльких авторов';
-                header('Location: /books/create');
-                exit;
-            }
+
+            // if (empty($title)) {
+            //     $_SESSION['error'] = 'Название книги обязательно';
+            //     header('Location: /books/create');
+            //     exit;
+            // }
+
+            // if (empty($year)) {
+            //     $_SESSION['error'] = 'Дата издания обязательно';
+            //     header('Location: /books/create');
+            //     exit;
+            // }
+
+            // if (empty($authors_ids)) {
+            //     $_SESSION['error'] = 'Выберите одного или нескотльких авторов';
+            //     header('Location: /books/create');
+            //     exit;
+            // }
 
             if ($this->bookModel->create($title, $year, $authors_ids)) {
                 $_SESSION['success'] = 'Книга успешно добавлена';
