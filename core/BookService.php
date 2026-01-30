@@ -1,5 +1,7 @@
 <?php
 
+namespace BOOKSLibraryCORE;
+
 use BOOKSLibraryCORE\FormFieldValidator;
 
 class BookService
@@ -8,13 +10,23 @@ class BookService
   {
     $errors = [];
 
-    if (!empty($data['firstName'])) {
-      $errors['firstName'] = FormFieldValidator::text($data['firstName'], [
-        'required' => false,
-        'fieldName' => 'Имя',
-        'minLength' => 2
-      ]);
+    $errors['title'] = FormFieldValidator::text($data['title'], [
+      'fieldName' => 'Заголовок',
+      'minLength' => 2,
+      'maxLength' => 10,
+    ]);
+
+    $errors['year'] = FormFieldValidator::text($data['year'], [
+      'fieldName' => 'Год',
+      'numbersAllowed' => true,
+      'pattern' => '/^[0-9]+$/'
+    ]);
+
+    if (isset($data['authors_ids'])) {
+      $errors['authors_ids'] = FormFieldValidator::select($data['authors_ids']);
     }
+
+
 
     return array_filter($errors);
   }

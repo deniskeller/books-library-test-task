@@ -2,6 +2,7 @@
 
 namespace BOOKSLibraryCONTROLLERS;
 
+use BOOKSLibraryCORE\BookService;
 use BOOKSLibraryCORE\FormFieldValidator;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
@@ -11,16 +12,20 @@ class BookController
     public string $title = 'Страница книг';
     private Book $bookModel;
     private Author $authorModel;
+    private BookService $bookService;
     public array $errors = [];
     public function __construct()
     {
         $this->bookModel = new Book();
         $this->authorModel = new Author();
+        $this->bookService = new BookService();
     }
 
     // рендер страницы books
     public function index(): void
     {
+        unset($_SESSION['errors'], $_SESSION['old_email'], $_SESSION['old_year'], $_SESSION['success']);
+
         $title = $this->title;
         $authorFilter = $_GET['book-filter-author'] ?? null;
         $books = $this->bookModel->getAll((int)$authorFilter);
@@ -75,79 +80,33 @@ class BookController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
-            $authors_ids = $_POST['$authors_ids'] ?? [];
+            $authors_ids = $_POST['authors_ids'] ?? [];
+            dump($_POST);
 
             // $formFields = ['title', 'year'];
-
             // $loadData = loadDataFormFields($formFields);
-            // dump($loadData);
-            // $validator = new FormFieldValidator();
-            // $validation = $validator->validate($loadData, [
-            //     'title' => [
-            //         'required' => true,
-            //         'min' => 2,
-            //         'max' => 200,
-            //     ],
-            //     'year' => [
-            //         'required' => true,
-            //     ]
-            // ]);
 
-            // $_SESSION['errors'] = [];
-
-            // $_SESSION['errors']['title'] = FormFieldValidator::text($title, [
-            //     'required' => true,
-            //     'minLength' => 2,
-            //     'maxLength' => 10,
-            // ]);
-
-            // if (!empty($_SESSION['errors'])) {
-            //     header('Location: /books/create');
-            //     exit;
-            // }
-
-            $errors = [];
-
-            $errors['title'] = FormFieldValidator::text($title, [
-                'required' => true,
-                'minLength' => 2,
-                'maxLength' => 10,
-            ]);
-
+            // Валидация данных
+            $errors = $this->bookService->validateBookData($_POST);
 
             // dump($_SESSION['errors']);
             // dd($errors);
 
-            if (!empty($errors['title'])) {
-                header('Location: /books/create');
-                exit;
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                $_SESSION['data'] = $_POST;
+                $_SESSION['old_title'] = $title;
+                $_SESSION['old_year'] = $year;
+                $_SESSION['old_year'] = $year;
+                redirect('/books/create');
+                // header('Location: /books/create');
+                // exit;
+            } else {
             }
-
-
-
-            // if (empty($title)) {
-            //     $_SESSION['error'] = 'Название книги обязательно';
-            //     header('Location: /books/create');
-            //     exit;
-            // }
-
-            // if (empty($year)) {
-            //     $_SESSION['error'] = 'Дата издания обязательно';
-            //     header('Location: /books/create');
-            //     exit;
-            // }
-
-            // if (empty($authors_ids)) {
-            //     $_SESSION['error'] = 'Выберите одного или нескотльких авторов';
-            //     header('Location: /books/create');
-            //     exit;
-            // }
 
             if ($this->bookModel->create($title, $year, $authors_ids)) {
                 $_SESSION['success'] = 'Книга успешно добавлена';
                 redirect('/books');
-                // header('Location: /books');
-                // exit;
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении книги';
             }
@@ -160,7 +119,7 @@ class BookController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
-            $authors_ids = $_POST['$authors_ids'] ?? [];
+            $authors_ids = $_POST['authors_ids'] ?? [];
 
             if (empty($title)) {
                 $_SESSION['error'] = 'Название книги обязательно';
