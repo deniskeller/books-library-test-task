@@ -48,7 +48,6 @@ if (isset($_POST['authors_ids'])) {
                             <?= htmlspecialchars($author['name']) ?></option>
                     <?php endforeach; ?>
                 </select>
-                <!-- <div class="form-text">Для выбора нескольких авторов удерживайте Ctrl</div> -->
 
                 <?php if (isset($_SESSION['errors']['authors_ids'])): ?>
                     <span style="color: red"><?= $_SESSION['errors']['authors_ids'] ?></span>

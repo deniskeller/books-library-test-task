@@ -78,10 +78,10 @@ class BookController
     public function store(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title']);
-            $year = trim($_POST['year']);
+            $title = trim($_POST['title']) ?? '';
+            $year = trim($_POST['year']) ?? '';
             $authors_ids = $_POST['authors_ids'] ?? [];
-            dump($_POST);
+            // dump($_POST);
 
             // $formFields = ['title', 'year'];
             // $loadData = loadDataFormFields($formFields);

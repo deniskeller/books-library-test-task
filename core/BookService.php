@@ -9,9 +9,10 @@ class BookService
   public function validateBookData(array $data): array
   {
     $errors = [];
+    // dd($data['authors_ids']);
 
     $errors['title'] = FormFieldValidator::text($data['title'], [
-      'fieldName' => 'Заголовок',
+      'fieldName' => 'Название книги',
       'minLength' => 2,
       'maxLength' => 10,
     ]);
@@ -22,9 +23,10 @@ class BookService
       'pattern' => '/^[0-9]+$/'
     ]);
 
-    if (isset($data['authors_ids'])) {
-      $errors['authors_ids'] = FormFieldValidator::select($data['authors_ids']);
-    }
+    $errors['authors_ids'] = FormFieldValidator::select($data['authors_ids'] ?? [], [
+      'fieldName' => 'Авторы'
+    ]);
+
 
 
 
