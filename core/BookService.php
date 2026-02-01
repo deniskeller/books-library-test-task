@@ -9,7 +9,6 @@ class BookService
   public function validateBookData(array $data): array
   {
     $errors = [];
-    // dd($data['authors_ids']);
 
     $errors['title'] = FormFieldValidator::text($data['title'], [
       'fieldName' => 'Название книги',
@@ -26,9 +25,6 @@ class BookService
     $errors['authors_ids'] = FormFieldValidator::select($data['authors_ids'] ?? [], [
       'fieldName' => 'Авторы'
     ]);
-
-
-
 
     return array_filter($errors);
   }
