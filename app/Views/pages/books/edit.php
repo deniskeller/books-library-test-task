@@ -1,7 +1,7 @@
 <?php
 require_once COMPONENTS . '/header.php';
 
-$selectedAuthorIds = getSelectedAuthorIds($_SESSION['old_data'] ?? [], $book ?? null);
+$selectedAuthorIds = getSelectedAuthorIds($book ?? null);
 ?>
 
 
@@ -14,9 +14,7 @@ $selectedAuthorIds = getSelectedAuthorIds($_SESSION['old_data'] ?? [], $book ?? 
             <input type="text" class="form-control" id="title" name="title"
                 value="<?= getFormValue('title', $_SESSION['old_data'] ?? [], $book ?? null) ?>">
 
-            <?php if (isset($_SESSION['errors']['title'])): ?>
-                <span style="color: red"><?= $_SESSION['errors']['title'] ?></span>
-            <?php endif; ?>
+            <?php showError('title'); ?>
         </div>
 
         <div class="mb-3">
@@ -24,9 +22,7 @@ $selectedAuthorIds = getSelectedAuthorIds($_SESSION['old_data'] ?? [], $book ?? 
             <input type="text" class="form-control" id="year" name="year"
                 value="<?= getFormValue('year', $_SESSION['old_data'] ?? [], $book ?? null) ?>">
 
-            <?php if (isset($_SESSION['errors']['year'])): ?>
-                <span style="color: red"><?= $_SESSION['errors']['year'] ?></span>
-            <?php endif; ?>
+            <?php showError('year'); ?>
         </div>
 
         <?php if (!empty($authors)) : ?>
@@ -40,9 +36,7 @@ $selectedAuthorIds = getSelectedAuthorIds($_SESSION['old_data'] ?? [], $book ?? 
                     <?php endforeach; ?>
                 </select>
 
-                <?php if (isset($_SESSION['errors']['authors_ids'])): ?>
-                    <span style="color: red"><?= $_SESSION['errors']['authors_ids'] ?></span>
-                <?php endif; ?>
+                <?php showError('authors_ids'); ?>
             </div>
         <?php endif; ?>
 

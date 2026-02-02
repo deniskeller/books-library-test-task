@@ -106,9 +106,10 @@ function getFormValue($field, $oldData, $book = null, $default = '')
     return $default;
 }
 
-function getSelectedAuthorIds($oldData, $book = null)
+function getSelectedAuthorIds($book = null)
 {
     $selectedAuthorIds = [];
+    $oldData = $_SESSION['old_data'] ?? [];
 
     // из SESSION
     if (isset($oldData['authors_ids'])) {
@@ -124,4 +125,11 @@ function getSelectedAuthorIds($oldData, $book = null)
     }
 
     return $selectedAuthorIds;
+}
+
+function showError($field)
+{
+    if (isset($_SESSION['errors'][$field])) {
+        echo '<span style="color: red">' . $_SESSION['errors'][$field] . '</span>';
+    }
 }
