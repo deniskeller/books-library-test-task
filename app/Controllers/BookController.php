@@ -3,7 +3,6 @@
 namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryCORE\BookService;
-use BOOKSLibraryCORE\FormFieldValidator;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 
@@ -17,14 +16,14 @@ class BookController
     public function __construct()
     {
         $this->bookModel = new Book();
-        $this->authorModel = new Author();
         $this->bookService = new BookService();
+        $this->authorModel = new Author();
     }
 
     // рендер страницы books
     public function index(): void
     {
-        unset($_SESSION['errors'], $_SESSION['old_email'], $_SESSION['old_year'], $_SESSION['success']);
+        unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['success']);
 
         $title = $this->title;
         $authorFilter = $_GET['book-filter-author'] ?? null;
@@ -81,7 +80,6 @@ class BookController
             $title = trim($_POST['title']) ?? '';
             $year = trim($_POST['year']) ?? '';
             $authors_ids = $_POST['authors_ids'] ?? [];
-            // dump($_POST);
 
             // $formFields = ['title', 'year'];
             // $loadData = loadDataFormFields($formFields);
@@ -89,22 +87,16 @@ class BookController
             // Валидация данных
             $errors = $this->bookService->validateBookData($_POST);
 
-            // dump($_SESSION['errors']);
-            // dd($errors);
-
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
-                $_SESSION['data'] = $_POST;
-                $_SESSION['old_title'] = $title;
-                $_SESSION['old_year'] = $year;
-                $_SESSION['old_year'] = $year;
+                $_SESSION['old_data'] = $_POST;
                 redirect('/books/create');
-                // header('Location: /books/create');
-                // exit;
-            } else {
             }
 
             if ($this->bookModel->create($title, $year, $authors_ids)) {
+                unset($_SESSION['old_data']);
+                unset($_SESSION['errors']);
+
                 $_SESSION['success'] = 'Книга успешно добавлена';
                 redirect('/books');
             } else {
@@ -113,36 +105,32 @@ class BookController
         }
     }
 
+    // редактирование пданных книги
     public function update($id): void
     {
-        //        dump('update');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title']);
             $year = trim($_POST['year']);
             $authors_ids = $_POST['authors_ids'] ?? [];
 
-            if (empty($title)) {
-                $_SESSION['error'] = 'Название книги обязательно';
-                header('Location: /books/edit?id=' . $id);
-                exit;
-            }
+            // Валидация данных
+            $errors = $this->bookService->validateBookData($_POST);
 
-            if (empty($year)) {
-                $_SESSION['error'] = 'Дата издания обязательно';
-                header('Location: /books/edit?id=' . $id);
-                exit;
-            }
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                $_SESSION['old_data'] = $_POST;
+                $_SESSION['old_data']['id'] = $id;
+                $_SESSION['old_data']['authors_ids'] = $authors_ids;
 
-            if (empty($authors_ids)) {
-                $_SESSION['error'] = 'Выберите одного или нескотльких авторов';
-                header('Location: /books/edit?id=' . $id);
-                exit;
+                redirect('/books/edit?id=' . $id);
             }
 
             if ($this->bookModel->update($id, $title, $year, $authors_ids)) {
+                unset($_SESSION['old_data']);
+                unset($_SESSION['errors']);
+
                 $_SESSION['success'] = 'Книга успешно отредактирована';
-                header('Location: /books');
-                exit;
+                redirect('/books');
             } else {
                 $_SESSION['error'] = 'Ошибка при обновлении книги';
             }

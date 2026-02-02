@@ -2,15 +2,25 @@
 require_once COMPONENTS . '/header.php';
 
 $selectedAuthorIds = [];
-// dump($_SESSION['data']);
+$oldData = $_SESSION['old_data'] ?? [];
 
-if (isset($_POST['authors_ids'])) {
+// Определяем выбранных авторов
+// из SESSION
+if (isset($oldData['authors_ids'])) {
+    $selectedAuthorIds = $oldData['authors_ids'];
+    // из POST
+} elseif (isset($_POST['authors_ids'])) {
     $selectedAuthorIds = $_POST['authors_ids'];
 } elseif (isset($book['authors'])) {
+    // из БД
     foreach ($book['authors'] as $author) {
         $selectedAuthorIds[] = $author['id'];
     }
 }
+
+// Значения полей
+$bookTitle = isset($oldData['title']) ? htmlspecialchars($oldData['title']) : (isset($book['title']) ? htmlspecialchars($book['title']) : '');
+$bookYear = isset($oldData['year']) ? htmlspecialchars($oldData['year']) : (isset($book['year']) ? htmlspecialchars($book['year']) : '');
 ?>
 
 
@@ -21,7 +31,7 @@ if (isset($_POST['authors_ids'])) {
         <div class="mb-3">
             <label for="title" class="form-label">Название книги</label>
             <input type="text" class="form-control" id="title" name="title"
-                value="<?= isset($book) ? htmlspecialchars($book['title']) : '' ?>">
+                value="<?= $bookTitle ?>">
 
             <?php if (isset($_SESSION['errors']['title'])): ?>
                 <span style="color: red"><?= $_SESSION['errors']['title'] ?></span>
@@ -31,7 +41,7 @@ if (isset($_POST['authors_ids'])) {
         <div class="mb-3">
             <label for="year" class="form-label">Год издания</label>
             <input type="text" class="form-control" id="year" name="year"
-                value="<?= isset($book) ? htmlspecialchars($book['year']) : '' ?>">
+                value="<?= $bookYear ?>">
 
             <?php if (isset($_SESSION['errors']['year'])): ?>
                 <span style="color: red"><?= $_SESSION['errors']['year'] ?></span>
