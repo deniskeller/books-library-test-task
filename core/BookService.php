@@ -13,7 +13,7 @@ class BookService
     $errors['title'] = FormFieldValidator::text($data['title'], [
       'fieldName' => 'Название книги',
       'minLength' => 2,
-      'maxLength' => 10,
+      'maxLength' => 255,
     ]);
 
     $errors['year'] = FormFieldValidator::text($data['year'], [

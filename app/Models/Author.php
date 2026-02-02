@@ -3,6 +3,7 @@
 namespace BOOKSLibraryMODELS;
 
 use BOOKSLibraryDATABASE\Database;
+use Exception;
 
 class Author
 {
@@ -17,15 +18,15 @@ class Author
         }
     }
 
-//    авторы вместе с счетчком книг
+    //    авторы вместе с счетчком книг
     public function getAll(): array
     {
         return $this->db->fetchAll('
-            SELECT 
-                authors.id, 
-                authors.name, 
+            SELECT
+                authors.id,
+                authors.name,
                 COUNT(book_authors.book_id) as book_counter
-            FROM authors 
+            FROM authors
             LEFT JOIN book_authors ON authors.id = book_authors.author_id
             GROUP BY authors.id
             ORDER BY authors.name
@@ -49,6 +50,13 @@ class Author
 
     public function update($id, $name): int
     {
-        return $this->db->update('authors', ['name' => $name], 'id = ?', [$id]);
+        try {
+            $this->db->update('authors', ['name' => $name], 'id = ?', [$id]);
+
+            return true;
+        } catch (Exception $e) {
+            error_log('Ошибка редактирования автора: ' . $e->getMessage());
+            return false;
+        }
     }
 }

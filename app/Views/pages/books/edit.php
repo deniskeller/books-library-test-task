@@ -4,7 +4,6 @@ require_once COMPONENTS . '/header.php';
 $selectedAuthorIds = getSelectedAuthorIds($book ?? null);
 ?>
 
-
 <div class="row">
     <h1><?= isset($book) ? 'Редактирование книги' : 'Добавление книги' ?></h1>
 

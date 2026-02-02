@@ -2,6 +2,7 @@
 
 namespace BOOKSLibraryCONTROLLERS;
 
+use BOOKSLibraryCORE\AuthorService;
 use BOOKSLibraryMODELS\Author;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -9,14 +10,18 @@ class AuthorController
 {
     public string $title = 'Страница авторов';
     private Author $authorModel;
+    private AuthorService $authorService;
 
     public function __construct()
     {
         $this->authorModel = new Author();
+        $this->authorService = new AuthorService();
     }
 
     public function index(): void
     {
+        unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['success']);
+
         $title = $this->title;
         $authors = $this->authorModel->getAll();
         require VIEWS . '/pages/authors/index.php';
@@ -45,23 +50,27 @@ class AuthorController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name']);
 
-            if (empty($name)) {
-                $_SESSION['error'] = 'ФИО автора обязательно';
-                header('Location: /authors/create');
-                exit;
+            // Валидация данных
+            $errors = $this->authorService->validateAuthorData($_POST);
+
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                $_SESSION['old_data'] = $_POST;
+                redirect('/authors/create');
             }
 
             if ($this->authorModel->create($name)) {
+                unset($_SESSION['old_data']);
+                unset($_SESSION['errors']);
+
                 $_SESSION['success'] = 'Автор успешно добавлен';
-                header('Location: /authors');
-                exit;
+                redirect('/authors');
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении автора';
             }
         }
     }
 
-    #[NoReturn]
     public function destroy($id): void
     {
         if ($this->authorModel->deleteById($id)) {
@@ -79,16 +88,21 @@ class AuthorController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name']);
 
-            if (empty($name)) {
-                $_SESSION['error'] = 'ФИО автора обязательно';
-                header('Location: /authors/edit?id=' . $id);
-                exit;
+            // Валидация данных
+            $errors = $this->authorService->validateAuthorData($_POST);
+
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                $_SESSION['old_data'] = $_POST;
+                redirect('/authors/edit?id=' . $id);
             }
 
             if ($this->authorModel->update($id, $name)) {
+                unset($_SESSION['old_data']);
+                unset($_SESSION['errors']);
                 $_SESSION['success'] = 'Автор успешно обновлен';
-                header('Location: /authors');
-                exit;
+
+                redirect('/authors');
             } else {
                 $_SESSION['error'] = 'Ошибка при обновлении автора';
             }
