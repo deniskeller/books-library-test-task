@@ -17,10 +17,6 @@ if (isset($oldData['authors_ids'])) {
         $selectedAuthorIds[] = $author['id'];
     }
 }
-
-// Значения полей
-$bookTitle = isset($oldData['title']) ? htmlspecialchars($oldData['title']) : (isset($book['title']) ? htmlspecialchars($book['title']) : '');
-$bookYear = isset($oldData['year']) ? htmlspecialchars($oldData['year']) : (isset($book['year']) ? htmlspecialchars($book['year']) : '');
 ?>
 
 
@@ -31,7 +27,7 @@ $bookYear = isset($oldData['year']) ? htmlspecialchars($oldData['year']) : (isse
         <div class="mb-3">
             <label for="title" class="form-label">Название книги</label>
             <input type="text" class="form-control" id="title" name="title"
-                value="<?= $bookTitle ?>">
+                value="<?= getFormValue('title', $_SESSION['old_data'] ?? [], $book ?? null) ?>">
 
             <?php if (isset($_SESSION['errors']['title'])): ?>
                 <span style="color: red"><?= $_SESSION['errors']['title'] ?></span>
@@ -41,7 +37,7 @@ $bookYear = isset($oldData['year']) ? htmlspecialchars($oldData['year']) : (isse
         <div class="mb-3">
             <label for="year" class="form-label">Год издания</label>
             <input type="text" class="form-control" id="year" name="year"
-                value="<?= $bookYear ?>">
+                value="<?= getFormValue('year', $_SESSION['old_data'] ?? [], $book ?? null) ?>">
 
             <?php if (isset($_SESSION['errors']['year'])): ?>
                 <span style="color: red"><?= $_SESSION['errors']['year'] ?></span>

@@ -91,3 +91,17 @@ function redirect($url = '')
     header("Location: {$redirect}");
     die;
 }
+
+
+function getFormValue($field, $oldData, $book = null, $default = '')
+{
+    if (isset($oldData[$field])) {
+        return htmlspecialchars($oldData[$field]);
+    }
+
+    if (isset($book[$field])) {
+        return htmlspecialchars($book[$field]);
+    }
+
+    return $default;
+}
