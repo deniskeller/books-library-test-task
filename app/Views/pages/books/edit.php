@@ -1,22 +1,7 @@
 <?php
 require_once COMPONENTS . '/header.php';
 
-$selectedAuthorIds = [];
-$oldData = $_SESSION['old_data'] ?? [];
-
-// Определяем выбранных авторов
-// из SESSION
-if (isset($oldData['authors_ids'])) {
-    $selectedAuthorIds = $oldData['authors_ids'];
-    // из POST
-} elseif (isset($_POST['authors_ids'])) {
-    $selectedAuthorIds = $_POST['authors_ids'];
-} elseif (isset($book['authors'])) {
-    // из БД
-    foreach ($book['authors'] as $author) {
-        $selectedAuthorIds[] = $author['id'];
-    }
-}
+$selectedAuthorIds = getSelectedAuthorIds($_SESSION['old_data'] ?? [], $book ?? null);
 ?>
 
 

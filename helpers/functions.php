@@ -105,3 +105,23 @@ function getFormValue($field, $oldData, $book = null, $default = '')
 
     return $default;
 }
+
+function getSelectedAuthorIds($oldData, $book = null)
+{
+    $selectedAuthorIds = [];
+
+    // из SESSION
+    if (isset($oldData['authors_ids'])) {
+        $selectedAuthorIds = $oldData['authors_ids'];
+        // из POST
+    } elseif (isset($_POST['authors_ids'])) {
+        $selectedAuthorIds = $_POST['authors_ids'];
+    } elseif (isset($book['authors'])) {
+        // из БД
+        foreach ($book['authors'] as $author) {
+            $selectedAuthorIds[] = $author['id'];
+        }
+    }
+
+    return $selectedAuthorIds;
+}
