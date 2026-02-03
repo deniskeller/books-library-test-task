@@ -1,4 +1,7 @@
 <?php
+
+use BOOKSLibraryCORE\Router;
+
 session_start();
 
 $start_app = microtime(true);
@@ -50,3 +53,6 @@ if (class_exists($controllerClass)) {
 }
 
 //dump("Time:" . microtime(true) - $start_app);
+
+$router = new Router();
+$router->dispatch();
