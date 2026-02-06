@@ -4,6 +4,7 @@ namespace BOOKSLibraryCORE;
 
 class Router
 {
+    private const CONTROLLER_NAMESPACE = 'BOOKSLibraryCONTROLLERS\\';
     private array $routes = [];
     private $params = [];
     public function __construct()
@@ -15,7 +16,7 @@ class Router
     public function dispatch()
     {
         $requestUri = trim(parse_url($_SERVER['REQUEST_URI'])['path'], '/');
-        dump($requestUri);
+        // dump($requestUri);
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         // для PUT и DELETE форм
@@ -24,7 +25,7 @@ class Router
         }
 
         foreach ($this->routes as $key => $route) {
-            dump($route);
+            // dump($route);
         }
     }
 }

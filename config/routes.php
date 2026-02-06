@@ -4,24 +4,15 @@ return [
     '' => ['controller' => 'BookController', 'method' => 'index'],
     // роуты книг
     'books/create' => ['controller' => 'BookController', 'method' => 'create'],
+    'books/store' => ['controller' => 'BookController', 'method' => 'store'],
     'books/edit?{id}' => ['controller' => 'BookController', 'method' => 'edit'],
+    'books/update?{id}' => ['controller' => 'BookController', 'method' => 'update'],
+    'books/destroy?{id}' => ['controller' => 'BookController', 'method' => 'destroy'],
     // роуты авторов
     'authors' => ['controller' => 'AuthorController', 'method' => 'index'],
     'authors/create' => ['controller' => 'AuthorController', 'method' => 'create'],
-    'authors/edit?{id}' => ['controller' => 'AuthorController', 'method' => 'edit']
-
-
-    // 'GET /' => 'BookController@index',
-    // Книги
-    // 'GET /books' => 'BookController@index',
-    // 'GET /books/create' => 'BookController@create',
-    // 'POST /books' => 'BookController@store',
-    // 'GET /books/{id}' => 'BookController@show',
-    // 'GET /books/{id}/edit' => 'BookController@edit',
-    // 'PUT /books?{id}' => 'BookController@update',
-    // 'DELETE /books/{id}' => 'BookController@destroy',
-
-    // // Авторы
-    // 'GET /authors' => 'AuthorController@index',
-    // 'GET /authors/{id}' => 'AuthorController@show',
+    'authors/store' => ['controller' => 'AuthorController', 'method' => 'store'],
+    'authors/edit?{id}' => ['controller' => 'AuthorController', 'method' => 'edit'],
+    'authors/update?{id}' => ['controller' => 'AuthorController', 'method' => 'update'],
+    'authors/destroy?{id}' => ['controller' => 'AuthorController', 'method' => 'destroy']
 ];

@@ -39,7 +39,7 @@ $controllerMap = [
 $controllerName = $controllerMap[$parts[0]] ?? 'BookController';
 //dump($controllerName);
 $method = $parts[1] ?? 'index';
-//dump($method);
+dump($method);
 $params = array_slice($parts, 2);
 //dump($params);
 
