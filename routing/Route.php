@@ -1,17 +1,21 @@
 <?php
 
-namespace BOOKSLibraryCORE;
+namespace BOOKSLibraryROUTING;
 
-class Router
+class Route
 {
     private const CONTROLLER_NAMESPACE = 'BOOKSLibraryCONTROLLERS\\';
-    private array $routes = [];
+    private static array $routes = [];
     private $params = [];
     public function __construct()
     {
-        $this->routes = require CONFIG . '/routes.php';
+        $this->routes = require ROUTING . '/routes.php';
     }
 
+    public static function get(string $route, array $controller)
+    {
+        echo 'get method';
+    }
 
     public function dispatch()
     {

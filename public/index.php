@@ -1,6 +1,6 @@
 <?php
 
-use BOOKSLibraryCORE\Router;
+use BOOKSLibraryROUTING\Route;
 
 session_start();
 
@@ -13,6 +13,7 @@ if (PHP_MAJOR_VERSION < 8) {
 require __DIR__ . '/../config/config.php';
 require ROOT . '/vendor/autoload.php';
 require ROOT . '/database/Database.php';
+require ROUTING . '/web.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
@@ -54,5 +55,5 @@ if (class_exists($controllerClass)) {
 
 //dump("Time:" . microtime(true) - $start_app);
 
-$router = new Router();
+$router = new Route();
 $router->dispatch();
