@@ -122,7 +122,7 @@ class BookController
                 $_SESSION['old_data']['id'] = $id;
                 $_SESSION['old_data']['authors_ids'] = $authors_ids;
 
-                redirect('/books/edit?id=' . $id);
+                redirect("/books/{$id}/edit");
             }
 
             if ($this->bookModel->update($id, $title, $year, $authors_ids)) {

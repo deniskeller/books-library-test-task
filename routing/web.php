@@ -13,7 +13,7 @@ Route::get('books/{id}/edit', [BookController::class, 'edit']);
 Route::put('books/{id}/update', [BookController::class, 'update']);
 Route::delete('books/{id}/destroy', [BookController::class, 'destroy']);
 // роуты авторов
-Route::get('/authors', [AuthorController::class, 'index']);
+Route::get('authors', [AuthorController::class, 'index']);
 Route::get('authors/create', [AuthorController::class, 'create']);
 Route::post('authors/store', [AuthorController::class, 'store']);
 Route::get('authors/{id}/edit', [AuthorController::class, 'edit']);
