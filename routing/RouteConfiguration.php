@@ -4,14 +4,16 @@ namespace BOOKSLibraryROUTING;
 
 class RouteConfiguration
 {
+  public string $method;
   public string $route;
   public string $controller;
   public string $action;
   public string $name;
   public string $middleware;
 
-  public function __construct($route, $controller, $action)
+  public function __construct($method, $route, $controller, $action)
   {
+    $this->method = $method;
     $this->route = $route;
     $this->controller = $controller;
     $this->action = $action;
