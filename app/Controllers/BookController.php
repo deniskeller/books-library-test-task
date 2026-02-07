@@ -68,9 +68,7 @@ class BookController
         } else {
             $_SESSION['error'] = 'Ошибка при удалении книги';
         }
-
-        header('Location: /books');
-        exit;
+        redirect("/");
     }
 
     // запись новой книги в таблицу
@@ -98,7 +96,7 @@ class BookController
                 unset($_SESSION['errors']);
 
                 $_SESSION['success'] = 'Книга успешно добавлена';
-                redirect('/books');
+                redirect('/');
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении книги';
             }
@@ -108,32 +106,30 @@ class BookController
     // редактирование пданных книги
     public function update($id): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title']);
-            $year = trim($_POST['year']);
-            $authors_ids = $_POST['authors_ids'] ?? [];
+        $title = trim($_POST['title']);
+        $year = trim($_POST['year']);
+        $authors_ids = $_POST['authors_ids'] ?? [];
 
-            // Валидация данных
-            $errors = $this->bookService->validateBookData($_POST);
+        // Валидация данных
+        $errors = $this->bookService->validateBookData($_POST);
 
-            if (!empty($errors)) {
-                $_SESSION['errors'] = $errors;
-                $_SESSION['old_data'] = $_POST;
-                $_SESSION['old_data']['id'] = $id;
-                $_SESSION['old_data']['authors_ids'] = $authors_ids;
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['old_data'] = $_POST;
+            $_SESSION['old_data']['id'] = $id;
+            $_SESSION['old_data']['authors_ids'] = $authors_ids;
 
-                redirect("/books/{$id}/edit");
-            }
+            redirect("/books/{$id}/edit");
+        }
 
-            if ($this->bookModel->update($id, $title, $year, $authors_ids)) {
-                unset($_SESSION['old_data']);
-                unset($_SESSION['errors']);
+        if ($this->bookModel->update($id, $title, $year, $authors_ids)) {
+            unset($_SESSION['old_data']);
+            unset($_SESSION['errors']);
 
-                $_SESSION['success'] = 'Книга успешно отредактирована';
-                redirect('/books');
-            } else {
-                $_SESSION['error'] = 'Ошибка при обновлении книги';
-            }
+            $_SESSION['success'] = 'Книга успешно отредактирована';
+            redirect('/');
+        } else {
+            $_SESSION['error'] = 'Ошибка при обновлении книги';
         }
     }
 }

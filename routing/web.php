@@ -10,8 +10,8 @@ Route::get('', [BookController::class, 'index']); // Главная страни
 Route::get('books/create', [BookController::class, 'create']);
 Route::post('books/store', [BookController::class, 'store']);
 Route::get('books/{id}/edit', [BookController::class, 'edit']);
-Route::put('books/{id}/update', [BookController::class, 'update']);
-Route::delete('books/{id}/destroy', [BookController::class, 'destroy']);
+Route::put('books/{id}', [BookController::class, 'update']);
+Route::delete('books/{id}', [BookController::class, 'destroy']);
 // роуты авторов
 Route::get('authors', [AuthorController::class, 'index']);
 Route::get('authors/create', [AuthorController::class, 'create']);

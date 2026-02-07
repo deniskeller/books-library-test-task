@@ -53,11 +53,14 @@ require_once COMPONENTS . '/header.php';
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-pencil"></i> Редактировать
                                         </a>
-                                        <a href="/books/<?= $book['id'] ?>/destroy"
-                                            class="btn btn-sm btn-outline-danger"
-                                            onclick="return confirm('Удалить этого автора?')">
-                                            <i class="bi bi-trash"></i> Удалить
-                                        </a>
+                                        <form action="/books/<?= $book['id'] ?>" method="POST" class="d-inline">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Удалить эту книгу?')">
+                                                <i class="bi bi-trash"></i> Удалить
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
