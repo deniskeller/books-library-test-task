@@ -14,6 +14,18 @@ class Route
         // dump($routeConfiguration);
         return $routeConfiguration;
     }
+    public static function post(string $route, array $controller)
+    {
+        echo 'method post';
+    }
+    public static function put(string $route, array $controller)
+    {
+        echo 'method put';
+    }
+    public static function delete(string $route, array $controller)
+    {
+        echo 'method delete';
+    }
 
     private static function addRoute($route, $controller): RouteConfiguration
     {
