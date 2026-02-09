@@ -8,7 +8,6 @@ use PDOException;
 
 class Book
 {
-
     private Database $db;
 
     public function __construct()
@@ -20,42 +19,57 @@ class Book
         }
     }
 
-    public function getAll($authorId = null): array
+    public function getAll($authorId = null): ?array
     {
-        $sql = "SELECT books.id, books.title, books.year,
+        try {
+            $sql = "SELECT books.id, books.title, books.year,
             GROUP_CONCAT(authors.name ORDER BY authors.name SEPARATOR ', ') as authors
             FROM books
             LEFT JOIN book_authors ON books.id = book_authors.book_id
             LEFT JOIN authors ON book_authors.author_id = authors.id";
 
-        if ($authorId) {
-            $sql .= " WHERE books.id IN (SELECT book_id FROM book_authors WHERE author_id = :authorId) GROUP BY books.id";
-            return $this->db->fetchAll($sql, ['authorId' => $authorId]);
-        }
+            if ($authorId) {
+                $sql .= " WHERE books.id IN (SELECT book_id FROM book_authors WHERE author_id = :authorId) GROUP BY books.id";
+                return $this->db->fetchAll($sql, ['authorId' => $authorId]);
+            }
 
-        $sql .= " GROUP BY books.id";
-        return $this->db->fetchAll($sql);
+            $sql .= " GROUP BY books.id";
+            return $this->db->fetchAll($sql);
+        } catch (PDOException $e) {
+            error_log("[Book::getAll] Ошибка получения списка книг: {$e->getMessage()}");
+            return null;
+        }
     }
 
     public function getAuthorsByBookId($bookId): array
     {
-        // запрос с алиасами
-        return $this->db->fetchAll("
+        try {
+            // запрос с алиасами
+            return $this->db->fetchAll("
             SELECT a.* FROM authors a
             INNER JOIN book_authors ba ON a.id = ba.author_id
             WHERE ba.book_id = ?
             ORDER BY a.name
         ", [$bookId]);
+        } catch (PDOException $e) {
+            error_log("[Book::getAuthorsByBookId] Ошибка получения авторов книги: {$e->getMessage()} | ID книги: {$bookId}");
+            return [];
+        }
     }
 
-    public function getById($id)
+    public function getById(int $id): ?array
     {
-        $book = $this->db->fetch('SELECT * FROM books WHERE id = :id', ['id' => $id]);
-
-        if ($book) {
+        try {
+            $book = $this->db->fetch('SELECT * FROM books WHERE id = :id', ['id' => $id]);
+            if (!$book) {
+                return null;
+            }
             $book['authors'] = $this->getAuthorsByBookId($id);
+            return $book;
+        } catch (PDOException $e) {
+            error_log("[Book::getById] Ошибка получения книги: {$e->getMessage()} | ID книги: {$id}");
+            return null;
         }
-        return $book;
     }
 
     public function deleteById($id): int
@@ -64,14 +78,10 @@ class Book
             $this->db->query("DELETE FROM book_authors WHERE book_id = ?", [$id]);
             return $this->db->delete('books', 'id = ?', [$id]);
         } catch (PDOException $e) {
-            error_log('Ошибка удаления книги в БД: ' . $e->getMessage());
-            return false;
-        } catch (Exception $e) {
-            error_log('Общая ошибка удаления книги: ' . $e->getMessage());
+            error_log("[Book::deleteById] Ошибка удаления книги: {$e->getMessage()} | Id книги: {$id}");
             return false;
         }
     }
-
 
     public function create($title, $year, $authors_ids): int
     {
@@ -86,14 +96,10 @@ class Book
 
             return $book_id;
         } catch (PDOException $e) {
-            error_log('Ошибка создания книги в БД: ' . $e->getMessage());
-            return false;
-        } catch (Exception $e) {
-            error_log('Общая ошибка создания книги: ' . $e->getMessage());
+            error_log("[Book::create] Ошибка создания книги: {$e->getMessage()} | Название книги: {$title}");
             return false;
         }
     }
-
 
     public function update($id, $title, $year, $authors_ids = []): int
     {
@@ -106,26 +112,37 @@ class Book
 
             return true;
         } catch (PDOException $e) {
-            error_log('Ошибка БД при редактирования книги: ' . $e->getMessage());
-            return false;
-        } catch (Exception $e) {
-            error_log('Общая ошибка редактирования книги: ' . $e->getMessage());
+            error_log("[Book::update] Ошибка при редактировании книги: {$e->getMessage()} | Название книги: {$title}");
             return false;
         }
     }
 
-    private function addAuthorsToBook($book_id, $author_ids): void
+    private function addAuthorsToBook($book_id, $author_ids): bool
     {
-        if (!empty($author_ids)) {
+        if (empty($author_ids)) {
+            return true;
+        }
+
+        try {
             foreach ($author_ids as $author_id) {
                 $sql = "INSERT INTO book_authors (book_id, author_id) VALUES (?, ?)";
                 $this->db->query($sql, [$book_id, $author_id]);
             }
+            return true;
+        } catch (PDOException $e) {
+            error_log("[Book::addAuthorsToBook] Ошибка добавления авторов книги: {$e->getMessage()} | ID книги: {$book_id}");
+            throw $e;
         }
     }
 
-    private function removeAllAuthorsFromBook($bookId): void
+    private function removeAllAuthorsFromBook($bookId): bool
     {
-        $this->db->query("DELETE FROM book_authors WHERE book_id = ?", [$bookId]);
+        try {
+            $this->db->query("DELETE FROM book_authors WHERE book_id = ?", [$bookId]);
+            return true;
+        } catch (PDOException $e) {
+            error_log("[Book::removeAllAuthorsFromBook] Ошибка удаления авторов книги: {$e->getMessage()} | ID книги: {$bookId}");
+            throw $e;
+        }
     }
 }

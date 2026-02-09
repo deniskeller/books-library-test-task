@@ -6,7 +6,7 @@ use BOOKSLibraryCORE\BookService;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 use BOOKSLibraryROUTING\Route;
-use Exception;
+use Throwable;
 
 class BookController
 {
@@ -30,6 +30,10 @@ class BookController
         $title = $this->title;
         $authorFilter = $_GET['book-filter-author'] ?? null;
         $books = $this->bookModel->getAll((int)$authorFilter);
+
+        if (!is_array($books)) {
+            $_SESSION['error'] = 'Не удалось загрузить список книг';
+        }
         $authors = $this->authorModel->getAll();
 
         require VIEWS . '/pages/books/index.php';
@@ -39,12 +43,20 @@ class BookController
     public function edit($id): void
     {
         $book = $this->bookModel->getById($id);
-        $authors = $this->authorModel->getAll();
-        $selectedAuthorIds = [];
 
         if (!$book) {
             $_SESSION['error'] = 'Книга не найдена';
-            Route::redirect('/books');
+            Route::redirect('/');
+            return;
+        }
+
+        $authors = $this->authorModel->getAll();
+        $selectedAuthorIds = [];
+
+        if (!empty($book['authors'])) {
+            foreach ($book['authors'] as $author) {
+                $selectedAuthorIds[] = $author['id'];
+            }
         }
 
         foreach ($book['authors'] as $author) {
