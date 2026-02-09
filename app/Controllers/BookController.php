@@ -5,6 +5,7 @@ namespace BOOKSLibraryCONTROLLERS;
 use BOOKSLibraryCORE\BookService;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
+use BOOKSLibraryROUTING\Route;
 
 class BookController
 {
@@ -42,8 +43,7 @@ class BookController
 
         if (!$book) {
             $_SESSION['error'] = 'Книга не найдена';
-            header('Location: /books');
-            exit;
+            Route::redirect('/books');
         }
 
         foreach ($book['authors'] as $author) {
@@ -68,7 +68,7 @@ class BookController
         } else {
             $_SESSION['error'] = 'Ошибка при удалении книги';
         }
-        redirect("/");
+        Route::redirect('/');
     }
 
     // запись новой книги в таблицу
@@ -88,7 +88,7 @@ class BookController
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
                 $_SESSION['old_data'] = $_POST;
-                redirect('/books/create');
+                Route::redirect('/books/create');
             }
 
             if ($this->bookModel->create($title, $year, $authors_ids)) {
@@ -96,7 +96,7 @@ class BookController
                 unset($_SESSION['errors']);
 
                 $_SESSION['success'] = 'Книга успешно добавлена';
-                redirect('/');
+                Route::redirect('/');
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении книги';
             }
@@ -119,7 +119,7 @@ class BookController
             $_SESSION['old_data']['id'] = $id;
             $_SESSION['old_data']['authors_ids'] = $authors_ids;
 
-            redirect("/books/{$id}/edit");
+            Route::redirect("/books/{$id}/edit");
         }
 
         if ($this->bookModel->update($id, $title, $year, $authors_ids)) {
@@ -127,7 +127,7 @@ class BookController
             unset($_SESSION['errors']);
 
             $_SESSION['success'] = 'Книга успешно отредактирована';
-            redirect('/');
+            Route::redirect('/');
         } else {
             $_SESSION['error'] = 'Ошибка при обновлении книги';
         }

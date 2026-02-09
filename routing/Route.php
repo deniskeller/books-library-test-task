@@ -33,6 +33,18 @@ class Route
         return $routeConfiguration;
     }
 
+    public static function redirect($url = '')
+    {
+        if ($url) {
+            $redirect = $url;
+        } else {
+            $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : PATH;
+        }
+
+        header("Location: {$redirect}");
+        die;
+    }
+
     public function dispatch()
     {
         $requestUri = trim(parse_url($_SERVER['REQUEST_URI'])['path'], '/');
