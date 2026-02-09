@@ -4,6 +4,7 @@ namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryCORE\AuthorService;
 use BOOKSLibraryMODELS\Author;
+use BOOKSLibraryROUTING\Route;
 use JetBrains\PhpStorm\NoReturn;
 
 class AuthorController
@@ -33,8 +34,7 @@ class AuthorController
 
         if (!$author) {
             $_SESSION['error'] = 'Автор не найден';
-            header('Location: /authors');
-            exit;
+            Route::redirect('/authors');
         }
 
         require VIEWS . '/pages/authors/edit.php';
@@ -56,7 +56,7 @@ class AuthorController
             if (!empty($errors)) {
                 $_SESSION['errors'] = $errors;
                 $_SESSION['old_data'] = $_POST;
-                redirect('/authors/create');
+                Route::redirect('/authors/create');
             }
 
             if ($this->authorModel->create($name)) {
@@ -64,7 +64,7 @@ class AuthorController
                 unset($_SESSION['errors']);
 
                 $_SESSION['success'] = 'Автор успешно добавлен';
-                redirect('/authors');
+                Route::redirect('/authors');
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении автора';
             }
@@ -79,8 +79,7 @@ class AuthorController
             $_SESSION['error'] = 'Ошибка при удалении автора';
         }
 
-        header('Location: /authors');
-        exit;
+        Route::redirect('/authors');
     }
 
     public function update($id): void
@@ -93,7 +92,7 @@ class AuthorController
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
             $_SESSION['old_data'] = $_POST;
-            redirect("/authors/{$id}/edit");
+            Route::redirect("/authors/{$id}/edit");
         }
 
         if ($this->authorModel->update($id, $name)) {
@@ -101,7 +100,7 @@ class AuthorController
             unset($_SESSION['errors']);
             $_SESSION['success'] = 'Автор успешно обновлен';
 
-            redirect('/authors');
+            Route::redirect("/authors");
         } else {
             $_SESSION['error'] = 'Ошибка при обновлении автора';
         }
