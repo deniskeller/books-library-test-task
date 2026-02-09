@@ -132,4 +132,9 @@ class BookController
             $_SESSION['error'] = 'Ошибка при обновлении книги';
         }
     }
+
+    public function show($id, $category = 'post')
+    {
+        echo 'id: ' . $id . '<br>' . 'category: ' . $category;
+    }
 }

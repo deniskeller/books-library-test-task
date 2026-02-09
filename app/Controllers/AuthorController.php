@@ -85,27 +85,25 @@ class AuthorController
 
     public function update($id): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name']);
+        $name = trim($_POST['name']);
 
-            // Валидация данных
-            $errors = $this->authorService->validateAuthorData($_POST);
+        // Валидация данных
+        $errors = $this->authorService->validateAuthorData($_POST);
 
-            if (!empty($errors)) {
-                $_SESSION['errors'] = $errors;
-                $_SESSION['old_data'] = $_POST;
-                redirect('/authors/edit?id=' . $id);
-            }
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['old_data'] = $_POST;
+            redirect("/authors/{$id}/edit");
+        }
 
-            if ($this->authorModel->update($id, $name)) {
-                unset($_SESSION['old_data']);
-                unset($_SESSION['errors']);
-                $_SESSION['success'] = 'Автор успешно обновлен';
+        if ($this->authorModel->update($id, $name)) {
+            unset($_SESSION['old_data']);
+            unset($_SESSION['errors']);
+            $_SESSION['success'] = 'Автор успешно обновлен';
 
-                redirect('/authors');
-            } else {
-                $_SESSION['error'] = 'Ошибка при обновлении автора';
-            }
+            redirect('/authors');
+        } else {
+            $_SESSION['error'] = 'Ошибка при обновлении автора';
         }
     }
 }

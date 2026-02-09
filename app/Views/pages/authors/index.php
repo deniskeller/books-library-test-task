@@ -8,37 +8,45 @@ require_once COMPONENTS . '/header.php';
             <?php if (!empty($authors)) : ?>
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>ФИО</th>
-                        <th>Количество книг</th>
-                        <th>Действия</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>ФИО</th>
+                            <th>Количество книг</th>
+                            <th>Действия</th>
+                        </tr>
                     </thead>
 
                     <tbody>
 
 
-                    <?php foreach ($authors as $index => $author) : ?>
-                        <tr>
-                            <th><?= $index + 1 ?></th>
-                            <td><?= $author['name'] ?></td>
-                            <td><?= $author['book_counter'] ?></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="/authors/edit?id=<?= $author['id'] ?>"
-                                       class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-pencil"></i> Редактировать
-                                    </a>
-                                    <a href="/authors/destroy?id=<?= $author['id'] ?>"
-                                       class="btn btn-sm btn-outline-danger"
-                                       onclick="return confirm('Удалить этого автора?')">
-                                        <i class="bi bi-trash"></i> Удалить
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
+                        <?php foreach ($authors as $index => $author) : ?>
+                            <tr>
+                                <th><?= $index + 1 ?></th>
+                                <td><?= $author['name'] ?></td>
+                                <td><?= $author['book_counter'] ?></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="/authors/<?= $author['id'] ?>/edit"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i> Редактировать
+                                        </a>
+                                        <!-- <a href="/authors/destroy?id=<?= $author['id'] ?>"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Удалить этого автора?')">
+                                            <i class="bi bi-trash"></i> Удалить
+                                        </a> -->
+                                        <form action="/authors/<?= $author['id'] ?>" method="POST" class="d-inline">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit"
+                                                class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Удалить этого автора?')">
+                                                <i class="bi bi-trash"></i> Удалить
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
 
                     </tbody>
                 </table>
