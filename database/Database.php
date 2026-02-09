@@ -37,7 +37,6 @@ class Database
                 $connectionConfig['password'],
                 $this->options
             );
-
         } catch (PDOException $e) {
             error_log('Ошибка подключения к базе данных: ' . $e->getMessage());
             throw new PDOException("Ошибка подключения к базе данных. Проверьте конфигрурацию.", 0, $e);
@@ -59,9 +58,14 @@ class Database
 
     public function query(string $sql, array $params = []): bool|\PDOStatement
     {
-        $stmt = $this->connection->prepare($sql);
-        $stmt->execute($params);
-        return $stmt;
+        try {
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            error_log("[SQL] Ошибка: {$e->getMessage()} | Запрос: {$sql} | Параметры: " . json_encode($params));
+            throw $e;
+        }
     }
 
     public function fetchAll(string $sql, array $params = []): array

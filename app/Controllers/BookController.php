@@ -6,6 +6,7 @@ use BOOKSLibraryCORE\BookService;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 use BOOKSLibraryROUTING\Route;
+use Exception;
 
 class BookController
 {
@@ -13,7 +14,7 @@ class BookController
     private Book $bookModel;
     private Author $authorModel;
     private BookService $bookService;
-    public array $errors = [];
+    // public array $errors = [];
     public function __construct()
     {
         $this->bookModel = new Book();
@@ -24,7 +25,7 @@ class BookController
     // рендер страницы books
     public function index(): void
     {
-        unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['success']);
+        unset($_SESSION['errors'], $_SESSION['old_data']);
 
         $title = $this->title;
         $authorFilter = $_GET['book-filter-author'] ?? null;
@@ -63,7 +64,9 @@ class BookController
     // удаление книги
     public function destroy($id): void
     {
-        if ($this->bookModel->deleteById($id)) {
+        $response = $this->bookModel->deleteById($id);
+
+        if ($response) {
             $_SESSION['success'] = 'Книга успешно удалена';
         } else {
             $_SESSION['error'] = 'Ошибка при удалении книги';
@@ -91,7 +94,9 @@ class BookController
                 Route::redirect('/books/create');
             }
 
-            if ($this->bookModel->create($title, $year, $authors_ids)) {
+            $response = $this->bookModel->create($title, $year, $authors_ids);
+
+            if ($response) {
                 unset($_SESSION['old_data']);
                 unset($_SESSION['errors']);
 
@@ -99,6 +104,7 @@ class BookController
                 Route::redirect('/');
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении книги';
+                Route::redirect('/books/create');
             }
         }
     }
@@ -130,6 +136,7 @@ class BookController
             Route::redirect('/');
         } else {
             $_SESSION['error'] = 'Ошибка при обновлении книги';
+            Route::redirect("/books/{$id}/edit");
         }
     }
 

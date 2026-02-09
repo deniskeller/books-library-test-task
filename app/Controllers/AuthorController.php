@@ -21,7 +21,7 @@ class AuthorController
 
     public function index(): void
     {
-        unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['success']);
+        unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['success'], $_SESSION['error']);
 
         $title = $this->title;
         $authors = $this->authorModel->getAll();

@@ -60,22 +60,38 @@ class Book
 
     public function deleteById($id): int
     {
-        $sql = "DELETE FROM book_authors WHERE book_id = $id";
-        $this->db->query($sql);
-
-        return $this->db->delete('books', 'id = :id', ['id' => $id]);
+        try {
+            $this->db->query("DELETE FROM book_authors WHERE book_id = ?", [$id]);
+            return $this->db->delete('books', 'id = ?', [$id]);
+        } catch (PDOException $e) {
+            error_log('Ошибка удаления книги в БД: ' . $e->getMessage());
+            return false;
+        } catch (Exception $e) {
+            error_log('Общая ошибка удаления книги: ' . $e->getMessage());
+            return false;
+        }
     }
 
 
     public function create($title, $year, $authors_ids): int
     {
-        $data = [
-            'title' => $title,
-            'year' => $year
-        ];
-        $book_id = $this->db->insert('books', $data);
-        $this->addAuthorsToBook($book_id, $authors_ids);
-        return $book_id;
+        try {
+            $data = [
+                'title' => $title,
+                'year' => $year
+            ];
+
+            $book_id = $this->db->insert('books', $data);
+            $this->addAuthorsToBook($book_id, $authors_ids);
+
+            return $book_id;
+        } catch (PDOException $e) {
+            error_log('Ошибка создания книги в БД: ' . $e->getMessage());
+            return false;
+        } catch (Exception $e) {
+            error_log('Общая ошибка создания книги: ' . $e->getMessage());
+            return false;
+        }
     }
 
 
@@ -83,14 +99,17 @@ class Book
     {
         try {
             $this->db->update('books', ['title' => $title, 'year' => $year], 'id = ?', [$id]);
-            //        удаляем старые связи
+            // удаляем старые связи
             $this->removeAllAuthorsFromBook($id);
             // добавляетм новые связи
             $this->addAuthorsToBook($id, $authors_ids);
 
             return true;
+        } catch (PDOException $e) {
+            error_log('Ошибка БД при редактирования книги: ' . $e->getMessage());
+            return false;
         } catch (Exception $e) {
-            error_log('Ошибка редактирования книги: ' . $e->getMessage());
+            error_log('Общая ошибка редактирования книги: ' . $e->getMessage());
             return false;
         }
     }

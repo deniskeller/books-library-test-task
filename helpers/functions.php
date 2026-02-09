@@ -133,3 +133,13 @@ function showError($field)
         echo '<span style="color: red">' . $_SESSION['errors'][$field] . '</span>';
     }
 }
+
+
+function getAlert()
+{
+    if (!empty($_SESSION['success']) or !empty($_SESSION['error'])) {
+        require_once COMPONENTS . '/alert.php';
+        unset($_SESSION['success']);
+        unset($_SESSION['error']);
+    }
+}
