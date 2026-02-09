@@ -38,7 +38,7 @@ class Database
                 $this->options
             );
         } catch (PDOException $e) {
-            error_log('Ошибка подключения к базе данных: ' . $e->getMessage());
+            error_log("Ошибка подключения к базе данных с именем {$connectionConfig['database']}: " . $e->getMessage());
             throw new PDOException("Ошибка подключения к базе данных. Проверьте конфигрурацию.", 0, $e);
         }
     }
