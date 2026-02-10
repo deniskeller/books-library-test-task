@@ -3,7 +3,6 @@
 namespace BOOKSLibraryMODELS;
 
 use BOOKSLibraryDATABASE\Database;
-use Exception;
 use PDOException;
 
 class Book

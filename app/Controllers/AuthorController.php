@@ -21,10 +21,13 @@ class AuthorController
 
     public function index(): void
     {
-        unset($_SESSION['errors'], $_SESSION['old_data'], $_SESSION['success'], $_SESSION['error']);
+        unset($_SESSION['errors'], $_SESSION['old_data']);
 
         $title = $this->title;
         $authors = $this->authorModel->getAll();
+        if (!is_array($authors)) {
+            $_SESSION['error'] = 'Не удалось загрузить список авторов';
+        }
         require VIEWS . '/pages/authors/index.php';
     }
 
@@ -67,19 +70,9 @@ class AuthorController
                 Route::redirect('/authors');
             } else {
                 $_SESSION['error'] = 'Ошибка при добавлении автора';
+                Route::redirect('/authors/create');
             }
         }
-    }
-
-    public function destroy($id): void
-    {
-        if ($this->authorModel->deleteById($id)) {
-            $_SESSION['success'] = 'Автор успешно удален';
-        } else {
-            $_SESSION['error'] = 'Ошибка при удалении автора';
-        }
-
-        Route::redirect('/authors');
     }
 
     public function update($id): void
@@ -103,6 +96,18 @@ class AuthorController
             Route::redirect("/authors");
         } else {
             $_SESSION['error'] = 'Ошибка при обновлении автора';
+            Route::redirect("/authors/{$id}/edit");
         }
+    }
+
+    public function destroy($id): void
+    {
+        if ($this->authorModel->deleteById($id)) {
+            $_SESSION['success'] = 'Автор успешно удален';
+        } else {
+            $_SESSION['error'] = 'Ошибка при удалении автора';
+        }
+
+        Route::redirect('/authors');
     }
 }

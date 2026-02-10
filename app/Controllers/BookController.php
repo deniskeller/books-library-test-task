@@ -6,7 +6,6 @@ use BOOKSLibraryCORE\BookService;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 use BOOKSLibraryROUTING\Route;
-use Throwable;
 
 class BookController
 {

@@ -4,6 +4,7 @@ namespace BOOKSLibraryMODELS;
 
 use BOOKSLibraryDATABASE\Database;
 use Exception;
+use PDOException;
 
 class Author
 {
@@ -18,10 +19,11 @@ class Author
         }
     }
 
-    //    авторы вместе с счетчком книг
-    public function getAll(): array
+    //    авторы вместе со счетчиком книг
+    public function getAll(): ?array
     {
-        return $this->db->fetchAll('
+        try {
+            return $this->db->fetchAll('
             SELECT
                 authors.id,
                 authors.name,
@@ -31,21 +33,40 @@ class Author
             GROUP BY authors.id
             ORDER BY authors.name
         ');
+        } catch (PDOException $e) {
+            error_log("[Author::getAll] Ошибка получения списка авторов: {$e->getMessage()}");
+            return null;
+        }
     }
 
     public function getById($id)
     {
-        return $this->db->fetch('SELECT * FROM authors WHERE id = :id', ['id' => $id]);
+        try {
+            return $this->db->fetch('SELECT * FROM authors WHERE id = :id', ['id' => $id]);
+        } catch (PDOException $e) {
+            error_log("[Author::getById] Ошибка получения автора: {$e->getMessage()} | ID автора: {$id}");
+            return null;
+        }
     }
 
     public function create($name): int
     {
-        return $this->db->insert('authors', ['name' => $name]);
+        try {
+            return $this->db->insert('authors', ['name' => $name]);
+        } catch (PDOException $e) {
+            error_log("[Author::create] Ошибка создания автора: {$e->getMessage()} | Имя автора: {$name}");
+            return false;
+        }
     }
 
     public function deleteById($id): int
     {
-        return $this->db->delete('authors', 'id = :id', ['id' => $id]);
+        try {
+            return $this->db->delete('authors', 'id = :id', ['id' => $id]);
+        } catch (PDOException $e) {
+            error_log("[Author::deleteById] Ошибка удаления автора: {$e->getMessage()} | Id автора: {$id}");
+            return false;
+        }
     }
 
     public function update($id, $name): int
@@ -54,8 +75,8 @@ class Author
             $this->db->update('authors', ['name' => $name], 'id = ?', [$id]);
 
             return true;
-        } catch (Exception $e) {
-            error_log('Ошибка редактирования автора: ' . $e->getMessage());
+        } catch (PDOException $e) {
+            error_log("[Author::update] Ошибка при редактировании автора: {$e->getMessage()} | Id автора: {$id}");
             return false;
         }
     }
