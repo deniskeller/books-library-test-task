@@ -3,9 +3,9 @@
 namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryCORE\AuthorService;
+use BOOKSLibraryCORE\View;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryROUTING\Route;
-use JetBrains\PhpStorm\NoReturn;
 
 class AuthorController
 {
@@ -28,7 +28,8 @@ class AuthorController
         if (!is_array($authors)) {
             $_SESSION['error'] = 'Не удалось загрузить список авторов';
         }
-        require VIEWS . '/pages/authors/index.php';
+        // require VIEWS . '/pages/authors/index.php';
+        View::render('authors.index', compact('title', 'authors'));
     }
 
     public function edit($id): void
@@ -40,12 +41,14 @@ class AuthorController
             Route::redirect('/authors');
         }
 
-        require VIEWS . '/pages/authors/edit.php';
+        // require VIEWS . '/pages/authors/edit.php';
+        View::render('authors.edit', compact('author'));
     }
 
     public function create(): void
     {
-        require VIEWS . '/pages/authors/edit.php';
+        // require VIEWS . '/pages/authors/edit.php';
+        View::render('authors.edit');
     }
 
     public function store(): void

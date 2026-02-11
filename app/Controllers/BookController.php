@@ -36,9 +36,8 @@ class BookController
         }
         $authors = $this->authorModel->getAll();
 
-        View::render('books.index', compact('title', 'books', 'authors'));
-
         // require VIEWS . '/pages/books/index.php';
+        View::render('books.index', compact('title', 'books', 'authors'));
     }
 
     // рендер страницы редатирования книги
@@ -65,14 +64,16 @@ class BookController
             $selectedAuthorIds[] = $author['id'];
         }
 
-        require VIEWS . '/pages/books/edit.php';
+        View::render('books.edit', compact('book', 'authors'));
+        // require VIEWS . '/pages/books/edit.php';
     }
 
     // рендер страницы создания книги
     public function create(): void
     {
         $authors = $this->authorModel->getAll();
-        require VIEWS . '/pages/books/edit.php';
+        // require VIEWS . '/pages/books/edit.php';
+        View::render('books.edit', compact('authors'));
     }
 
     // удаление книги
