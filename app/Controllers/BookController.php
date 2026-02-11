@@ -3,6 +3,7 @@
 namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryCORE\BookService;
+use BOOKSLibraryCORE\View;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
 use BOOKSLibraryROUTING\Route;
@@ -35,7 +36,9 @@ class BookController
         }
         $authors = $this->authorModel->getAll();
 
-        require VIEWS . '/pages/books/index.php';
+        View::render('books.index', compact('title', 'books', 'authors'));
+
+        // require VIEWS . '/pages/books/index.php';
     }
 
     // рендер страницы редатирования книги
