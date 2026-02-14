@@ -62,6 +62,13 @@ class Route
                 $params = $route->extractParams($requestUri);
                 // dump($params);
 
+                dump($route);
+                dump($route->middleware);
+                if (!empty($route->middleware)) {
+                    $middleware = MIDDLEWARE[$route->middleware];
+                    dump($middleware);
+                }
+
                 if (!class_exists($controllerClass)) {
                     // dump("Контроллер $controllerClass не существует");
                     throw new Exception("Контроллер $controllerClass не существует");

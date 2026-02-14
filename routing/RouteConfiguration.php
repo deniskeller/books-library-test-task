@@ -11,7 +11,7 @@ class RouteConfiguration
   public string $pattern;
   public array $params = [];
   public string $name;
-  public string $middleware;
+  public array $middleware = [];
 
   public function __construct($method, $uri, $controller, $action)
   {
@@ -20,18 +20,6 @@ class RouteConfiguration
     $this->controller = $controller;
     $this->action = $action;
     $this->createPattern();
-  }
-
-  public function name(string $name): RouteConfiguration
-  {
-    $this->name = $name;
-    return $this;
-  }
-
-  public function middleware(string $middleware): RouteConfiguration
-  {
-    $this->middleware = $middleware;
-    return $this;
   }
 
   // вычислени и создание паттерна
@@ -70,11 +58,12 @@ class RouteConfiguration
     // dump($this->pattern);
     // dump($requestUri);
     preg_match($this->pattern, $requestUri, $matches);
-    // dump("matches " . $matches);
-    // dump("extractParams " . $this->params);
+    // dump($matches);
+    // dump($this->params);
 
     // Удаляем полное совпадение (первый элемент)
     array_shift($matches);
+    // dump($matches);
 
     // Создаем ассоциативный массив [имя_параметра => значение]
     $result = [];
@@ -85,5 +74,17 @@ class RouteConfiguration
     }
     // dump($result);
     return $result;
+  }
+
+  public function name(string $name): RouteConfiguration
+  {
+    $this->name = $name;
+    return $this;
+  }
+
+  public function middleware(string $middleware): RouteConfiguration
+  {
+    $this->middleware[] = $middleware;
+    return $this;
   }
 }
