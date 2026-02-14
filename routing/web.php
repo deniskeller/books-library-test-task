@@ -19,7 +19,7 @@ Route::get('logout', [UserController::class, 'logout'])->middleware('auth');
 Route::get('', [BookController::class, 'index']); // Главная страница
 Route::get('books/create', [BookController::class, 'create'])->middleware('auth');
 Route::post('books/store', [BookController::class, 'store']);
-Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth');
+Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth')->middleware(middleware: 'role:admin');
 Route::put('books/{id}', [BookController::class, 'update']);
 Route::delete('books/{id}', [BookController::class, 'destroy']);
 Route::get('books/{id}/category/{category}', [BookController::class, 'show']); // тестовый роут для нескольких параметров

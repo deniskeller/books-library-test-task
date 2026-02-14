@@ -96,9 +96,16 @@ class Route
     private function runMiddleware(array $middlewares)
     {
         foreach ($middlewares as $middleware) {
-            // dump($middleware);
-            $middle = MIDDLEWARE[$middleware];
-            (new $middle)->handle($middleware);
+            if (str_contains($middleware, ':')) {
+                // dump($middleware);
+                $strSplit = explode(':', $middleware);
+                // dump($strSplit[1]);
+                $middle = MIDDLEWARE[$strSplit[0]];
+                (new $middle)->handle($strSplit[1]);
+            } else {
+                $middle = MIDDLEWARE[$middleware];
+                (new $middle)->handle($middleware);
+            }
         }
     }
 }

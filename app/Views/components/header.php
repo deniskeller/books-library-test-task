@@ -44,7 +44,7 @@
 
                     <ul class="d-flex text-white gap-4 align-items-center list-unstyled m-0">
                         <?php if (isset($_SESSION['user_id'])) : ?>
-                            <li><?php echo $_SESSION['user_name'] ?></li>
+                            <li><?php echo $_SESSION['user_name'] . ' роль: ' . $_SESSION['user_role'] ?></li>
                             <li><a class="nav-link" href="/logout">Выход</a></li>
                         <?php else : ?>
                             <li><a class="nav-link" href="/login">Вход</a></li>
