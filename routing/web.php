@@ -6,7 +6,8 @@ use BOOKSLibraryCONTROLLERS\UserController;
 use BOOKSLibraryROUTING\Route;
 
 const MIDDLEWARE = [
-  'auth' => \BOOKSLibraryMIDDLEWARE\AuthMiddleware::class
+  'auth' => \BOOKSLibraryMIDDLEWARE\AuthMiddleware::class,
+  'role' => \BOOKSLibraryMIDDLEWARE\RoleMiddleware::class
 ];
 
 // страницы входа
@@ -15,7 +16,7 @@ Route::get('login', [UserController::class, 'index']);
 Route::get('', [BookController::class, 'index']); // Главная страница
 Route::get('books/create', [BookController::class, 'create']);
 Route::post('books/store', [BookController::class, 'store']);
-Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth');
+Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth')->middleware(middleware: 'role:user');
 Route::put('books/{id}', [BookController::class, 'update']);
 Route::delete('books/{id}', [BookController::class, 'destroy']);
 Route::get('books/{id}/category/{category}', [BookController::class, 'show']); // тестовый роут для нескольких параметров

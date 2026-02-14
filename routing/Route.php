@@ -62,10 +62,9 @@ class Route
                 $params = $route->extractParams($requestUri);
                 // dump($params);
 
-                dump($route);
+                // dump($route);
                 if (!empty($route->middleware)) {
-                    $middleware = MIDDLEWARE[$route->middleware];
-                    dump($middleware);
+                    dump($route->middleware);
                 }
 
                 if (!class_exists($controllerClass)) {
