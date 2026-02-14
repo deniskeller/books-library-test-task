@@ -42,9 +42,9 @@
                         </li>
                     </ul>
 
-                    <ul class="d-flex text-white align-items-center list-unstyled m-0">
+                    <ul class="d-flex text-white gap-4 align-items-center list-unstyled m-0">
                         <?php if (isset($_SESSION['user_id'])) : ?>
-                            <li><a class="nav-link"><?php $_SESSION['user_id'] ?></a></li>
+                            <li><?php echo $_SESSION['user_name'] ?></li>
                             <li><a class="nav-link" href="/logout">Выход</a></li>
                         <?php else : ?>
                             <li><a class="nav-link" href="/login">Вход</a></li>
