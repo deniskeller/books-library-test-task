@@ -63,7 +63,6 @@ class Route
                 // dump($params);
 
                 dump($route);
-                dump($route->middleware);
                 if (!empty($route->middleware)) {
                     $middleware = MIDDLEWARE[$route->middleware];
                     dump($middleware);
