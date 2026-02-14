@@ -6,6 +6,11 @@ use Exception;
 
 class Route
 {
+    // const MIDDLEWARE = [
+    //     'auth' => \BOOKSLibraryMIDDLEWARE\AuthMiddleware::class,
+    //     'role' => \BOOKSLibraryMIDDLEWARE\RoleMiddleware::class,
+    //     'guest' => \BOOKSLibraryMIDDLEWARE\GuestMiddleware::class,
+    // ];
     private static array $routes = [];
 
     public static function get(string $uri, array $controller): RouteConfiguration
@@ -33,18 +38,6 @@ class Route
         return $routeConfiguration;
     }
 
-    public static function redirect($url = '')
-    {
-        if ($url) {
-            $redirect = $url;
-        } else {
-            $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : PATH;
-        }
-
-        header("Location: {$redirect}");
-        die;
-    }
-
     public function dispatch()
     {
         $requestUri = trim(parse_url($_SERVER['REQUEST_URI'])['path'], '/');
@@ -64,7 +57,8 @@ class Route
 
                 // dump($route);
                 if (!empty($route->middleware)) {
-                    dump($route->middleware);
+                    // dump($route->middleware);
+                    $this->runMiddleware($route->middleware);
                 }
 
                 if (!class_exists($controllerClass)) {
@@ -85,5 +79,26 @@ class Route
         }
 
         abort(404);
+    }
+
+    public static function redirect($url = '')
+    {
+        if ($url) {
+            $redirect = $url;
+        } else {
+            $redirect = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : PATH;
+        }
+
+        header("Location: {$redirect}");
+        die;
+    }
+
+    private function runMiddleware(array $middlewares)
+    {
+        foreach ($middlewares as $middleware) {
+            // dump($middleware);
+            $middle = MIDDLEWARE[$middleware];
+            (new $middle)->handle($middleware);
+        }
     }
 }

@@ -7,8 +7,18 @@ use BOOKSLibraryCORE\View;
 
 class UserController
 {
-  public function index(): void
+  public function login(): void
   {
     View::render('login');
+  }
+
+  public function registration(): void
+  {
+    View::render('registration');
+  }
+
+  public function logout(): void
+  {
+    View::render('logout');
   }
 }
