@@ -21,7 +21,7 @@ Route::get('books/create', [BookController::class, 'create'])->middleware('auth'
 Route::post('books/store', [BookController::class, 'store']);
 Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth')->middleware(middleware: 'role:admin');
 Route::put('books/{id}', [BookController::class, 'update']);
-Route::delete('books/{id}', [BookController::class, 'destroy']);
+Route::delete('books/{id}', [BookController::class, 'destroy'])->middleware('auth')->middleware('role:admin');
 Route::get('books/{id}/category/{category}', [BookController::class, 'show']); // тестовый роут для нескольких параметров
 // роуты авторов
 Route::get('authors', [AuthorController::class, 'index']);

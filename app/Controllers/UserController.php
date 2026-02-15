@@ -9,20 +9,21 @@ class UserController
 {
   public function login(): void
   {
-    $_SESSION['user_id'] = 'auth';
-    $_SESSION['user_name'] = 'Denis';
-    $_SESSION['user_role'] = 'user';
+    // $_SESSION['user_id'] = 'auth';
+    // $_SESSION['user_name'] = 'Denis';
+    // $_SESSION['user_role'] = 'user';
     // $_SESSION['user_role'] = 'admin';
     View::render('login');
   }
 
   public function registration(): void
   {
-    $_SESSION['user_id'] = 'auth';
-    $_SESSION['user_name'] = 'Denis';
-    $_SESSION['user_role'] = 'user';
+    $title = 'Регистрация';
+    // $_SESSION['user_id'] = 'auth';
+    // $_SESSION['user_name'] = 'Denis';
+    // $_SESSION['user_role'] = 'user';
 
-    View::render('registration');
+    View::render('registration', compact('title'));
   }
 
   public function logout(): void
