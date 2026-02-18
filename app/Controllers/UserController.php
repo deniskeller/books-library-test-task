@@ -49,13 +49,29 @@ class UserController
   {
     $username = trim($_POST['username']) ?? '';
     $password = trim($_POST['password']) ?? '';
+    // dump($username);
+    // dump($password);
 
     // Валидация данных
     $errors = $this->userService->validateUserData($_POST);
+    dump($errors);
 
     if (!empty($errors)) {
       $_SESSION['errors'] = $errors;
       $_SESSION['old_data'] = $_POST;
+      Route::redirect('/registration');
+    }
+
+    $response = $this->userModel->create($username, $password);
+
+    if ($response) {
+      unset($_SESSION['old_data']);
+      unset($_SESSION['errors']);
+
+      $_SESSION['success'] = 'Вы успешно зарегистрировались';
+      Route::redirect('/');
+    } else {
+      $_SESSION['error'] = 'Ошибка при регистрации';
       Route::redirect('/registration');
     }
   }
