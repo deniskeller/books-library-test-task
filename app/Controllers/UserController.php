@@ -16,6 +16,15 @@ class UserController
     View::render('login');
   }
 
+  public function logout(): void
+  {
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_name']);
+    unset($_SESSION['user_role']);
+
+    View::render('logout');
+  }
+
   public function registration(): void
   {
     $title = 'Регистрация';
@@ -24,14 +33,5 @@ class UserController
     // $_SESSION['user_role'] = 'user';
 
     View::render('registration', compact('title'));
-  }
-
-  public function logout(): void
-  {
-    unset($_SESSION['user_id']);
-    unset($_SESSION['user_name']);
-    unset($_SESSION['user_role']);
-
-    View::render('logout');
   }
 }
