@@ -2,32 +2,17 @@
 
 namespace BOOKSLibraryCORE;
 
-use BOOKSLibraryDATABASE\Database;
 use BOOKSLibraryCORE\FormFieldValidator;
-use PDOException;
+use BOOKSLibraryMODELS\User;
 
 class UserService
 {
-  private Database $db;
+  private User $userModel;
 
   public function __construct()
   {
-    $this->db = Database::getInstance();
-
-    if (!$this->db->getConnection()) {
-      throw new \RuntimeException('Нет подключения к базе данных');
-    }
+    $this->userModel = new User();
   }
-  public function isUsernameUnique(string $username): bool
-  {
-    try {
-      return $this->db->fetch('SELECT * FROM users WHERE username = :username', ['username' => $username]);
-    } catch (PDOException $e) {
-      error_log("[UserService::isUsernameUnique] Ошибка проверки логина на уникальность: {$e->getMessage()} | Логин пользователя: {$username}");
-      return false;
-    }
-  }
-
   public function validateUserData(array $data): array
   {
     $errors = [];
@@ -42,6 +27,10 @@ class UserService
       'required' => true,
       'minLength' => 8
     ]);
+
+    if (!$this->userModel->isUsernameUnique($data['username'])) {
+      $errors['username'] = 'Пользователь с таким логином уже существует';
+    }
 
     return array_filter($errors);
   }

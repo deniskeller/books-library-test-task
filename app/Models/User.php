@@ -28,6 +28,17 @@ class User
     }
   }
 
+  public function isUsernameUnique(string $username): bool
+  {
+    try {
+      $result = $this->db->fetch('SELECT * FROM users WHERE username = :username', ['username' => $username]);
+      return $result === false;
+    } catch (PDOException $e) {
+      error_log("[UserService::isUsernameUnique] Ошибка проверки логина на уникальность: {$e->getMessage()} | Логин пользователя: {$username}");
+      return false;
+    }
+  }
+
   public function getById($id)
   {
     try {
