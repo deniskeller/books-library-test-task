@@ -11,10 +11,16 @@ const MIDDLEWARE = [
   'guest' => \BOOKSLibraryMIDDLEWARE\GuestMiddleware::class,
 ];
 
+// роуты личного кабинета
 // страницы входа
 Route::get('login', [UserController::class, 'login'])->middleware('guest');
+
+// страницы регистрации
 Route::get('registration', [UserController::class, 'registration'])->middleware('guest');
+Route::post('registration/store', [UserController::class, 'store'])->middleware('guest');
+// страница выхода
 Route::get('logout', [UserController::class, 'logout'])->middleware('auth');
+
 // роуты книг
 Route::get('', [BookController::class, 'index']); // Главная страница
 Route::get('books/create', [BookController::class, 'create'])->middleware('auth');
@@ -23,6 +29,7 @@ Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth
 Route::put('books/{id}', [BookController::class, 'update']);
 Route::delete('books/{id}', [BookController::class, 'destroy'])->middleware('auth')->middleware('role:admin');
 Route::get('books/{id}/category/{category}', [BookController::class, 'show']); // тестовый роут для нескольких параметров
+
 // роуты авторов
 Route::get('authors', [AuthorController::class, 'index']);
 Route::get('authors/create', [AuthorController::class, 'create'])->middleware('auth');

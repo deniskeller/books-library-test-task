@@ -2,11 +2,21 @@
 
 namespace BOOKSLibraryCONTROLLERS;
 
+use BOOKSLibraryCORE\UserService;
 use BOOKSLibraryCORE\View;
-
+use BOOKSLibraryMODELS\User;
+use BOOKSLibraryROUTING\Route;
 
 class UserController
 {
+  private User $userModel;
+  private UserService $userService;
+  // public array $errors = [];
+  public function __construct()
+  {
+    $this->userModel = new User();
+    $this->userService = new UserService();
+  }
   public function login(): void
   {
     // $_SESSION['user_id'] = 'auth';
@@ -33,5 +43,20 @@ class UserController
     // $_SESSION['user_role'] = 'user';
 
     View::render('registration', compact('title'));
+  }
+
+  public function store(): void
+  {
+    $username = trim($_POST['username']) ?? '';
+    $password = trim($_POST['password']) ?? '';
+
+    // Валидация данных
+    $errors = $this->userService->validateUserData($_POST);
+
+    if (!empty($errors)) {
+      $_SESSION['errors'] = $errors;
+      $_SESSION['old_data'] = $_POST;
+      Route::redirect('/registration');
+    }
   }
 }

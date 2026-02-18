@@ -92,4 +92,47 @@ class FormFieldValidator
 
     return '';
   }
+
+  public static function password(
+    ?string $value,
+    array $options = []
+  ): string {
+    $required = $options['required'] ?? false;
+    $fieldName = $options['fieldName'] ?? 'Пароль';
+    $minLength = $options['minLength'] ?? 0;
+
+    // Проверка на обязательность
+    if ($required && empty(trim($value ?? ''))) {
+      return "{$fieldName} обязательно для заполнения";
+    }
+
+    // Если значение пустое и не обязательное - дальше не проверяем
+    $trimmedValue = trim($value ?? '');
+    if (empty($trimmedValue)) {
+      return '';
+    }
+
+    // Проверка минимальной длины
+    if ($minLength > 0 && strlen($trimmedValue) < $minLength) {
+      $charWord = $minLength === 1 ? 'символ' : ($minLength >= 2 && $minLength <= 4 ? 'символа' : 'символов');
+      return "{$fieldName} должно содержать минимум {$minLength} {$charWord}";
+    }
+
+    // Проверка на наличие цифры
+    if (!preg_match('/\d/', $trimmedValue)) {
+      return 'Пароль должен иметь хотя бы одну цифру';
+    }
+
+    // Проверка на наличие буквы
+    if (!preg_match('/[a-zа-яё]/iu', $trimmedValue)) {
+      return 'Пароль должен иметь хотя бы одну букву';
+    }
+
+    // Проверка на пробелы
+    if (preg_match('/\s/', $trimmedValue)) {
+      return 'Пароль не должен содержать пробелы';
+    }
+
+    return '';
+  }
 }
