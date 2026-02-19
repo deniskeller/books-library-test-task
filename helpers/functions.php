@@ -93,14 +93,14 @@ function redirect($url = '')
 }
 
 
-function getFormValue($field, $oldData, $book = null, $default = '')
+function getFormValue($field, $oldData, $param = null, $default = '')
 {
     if (isset($oldData[$field])) {
         return htmlspecialchars($oldData[$field]);
     }
 
-    if (isset($book[$field])) {
-        return htmlspecialchars($book[$field]);
+    if (isset($param[$field])) {
+        return htmlspecialchars($param[$field]);
     }
 
     return $default;

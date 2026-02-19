@@ -7,13 +7,14 @@ require_once COMPONENTS . '/header.php';
 
   <div class="mb-3">
     <label for="username" class="form-label">Логин</label>
-    <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp">
-    <!-- <div id="usernameHelp" class="form-text">We'll never share your username with anyone else.</div> -->
+    <input type="text" class="form-control" name="username" id="username" aria-describedby="usernameHelp" value="<?= getFormValue('username', $_SESSION['old_data'] ?? [], $user ?? null) ?>">
+    <?php showError('username'); ?>
   </div>
 
   <div class="mb-3">
     <label for="password" class="form-label">Пароль</label>
-    <input type="text" class="form-control" id="password" name="password">
+    <input type="text" class="form-control" id="password" name="password" value="<?= getFormValue('password', $_SESSION['old_data'] ?? [], $user ?? null) ?>">
+    <?php showError('password'); ?>
   </div>
 
   <button type="submit" class="btn btn-primary">Регистрация</button>

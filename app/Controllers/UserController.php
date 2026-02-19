@@ -38,10 +38,6 @@ class UserController
   public function registration(): void
   {
     $title = 'Регистрация';
-    // $_SESSION['user_id'] = 'auth';
-    // $_SESSION['user_name'] = 'Denis';
-    // $_SESSION['user_role'] = 'user';
-
     View::render('registration', compact('title'));
   }
 
@@ -50,9 +46,7 @@ class UserController
     $username = trim($_POST['username']) ?? '';
     $password = trim($_POST['password']) ?? '';
 
-    // Валидация данных
     $errors = $this->userService->validateUserData($_POST);
-    // dump($errors);
 
     if (!empty($errors)) {
       $_SESSION['errors'] = $errors;
@@ -66,6 +60,9 @@ class UserController
     if ($response) {
       unset($_SESSION['old_data']);
       unset($_SESSION['errors']);
+      $_SESSION['user_id'] = 'auth';
+      $_SESSION['user_name'] = $username;
+      $_SESSION['user_role'] = 'user';
 
       $_SESSION['success'] = 'Вы успешно зарегистрировались';
       Route::redirect('/');
