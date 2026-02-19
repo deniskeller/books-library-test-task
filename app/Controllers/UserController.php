@@ -17,13 +17,47 @@ class UserController
     $this->userModel = new User();
     $this->userService = new UserService();
   }
-  public function login(): void
+  public function loginShow(): void
   {
     // $_SESSION['user_id'] = 'auth';
     // $_SESSION['user_name'] = 'Denis';
     // $_SESSION['user_role'] = 'user';
     // $_SESSION['user_role'] = 'admin';
-    View::render('login');
+    $title = 'Вход';
+    View::render('login', compact('title'));
+  }
+
+  public function login(): void
+  {
+    $username = trim($_POST['username']) ?? '';
+    $password = trim($_POST['password']) ?? '';
+
+    $errors = $this->userService->validateUserData($_POST);
+
+    dump($errors);
+
+    if (!empty($errors)) {
+      $_SESSION['errors'] = $errors;
+      $_SESSION['old_data'] = $_POST;
+      Route::redirect('/login');
+    }
+
+    // $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    // $response = $this->userModel->create($username, $password_hash);
+
+    // if ($response) {
+    //   unset($_SESSION['old_data']);
+    //   unset($_SESSION['errors']);
+    //   $_SESSION['user_id'] = 'auth';
+    //   $_SESSION['user_name'] = $username;
+    //   $_SESSION['user_role'] = 'user';
+
+    //   $_SESSION['success'] = 'Вы успешно зарегистрировались';
+    //   Route::redirect('/');
+    // } else {
+    //   $_SESSION['error'] = 'Ошибка при регистрации';
+    //   Route::redirect('/register');
+    // }
   }
 
   public function logout(): void
@@ -35,13 +69,13 @@ class UserController
     View::render('logout');
   }
 
-  public function registration(): void
+  public function registerShow(): void
   {
     $title = 'Регистрация';
-    View::render('registration', compact('title'));
+    View::render('register', compact('title'));
   }
 
-  public function store(): void
+  public function register(): void
   {
     $username = trim($_POST['username']) ?? '';
     $password = trim($_POST['password']) ?? '';
@@ -51,7 +85,7 @@ class UserController
     if (!empty($errors)) {
       $_SESSION['errors'] = $errors;
       $_SESSION['old_data'] = $_POST;
-      Route::redirect('/registration');
+      Route::redirect('/register');
     }
 
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -68,7 +102,7 @@ class UserController
       Route::redirect('/');
     } else {
       $_SESSION['error'] = 'Ошибка при регистрации';
-      Route::redirect('/registration');
+      Route::redirect('/register');
     }
   }
 }

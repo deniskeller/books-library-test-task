@@ -13,11 +13,12 @@ const MIDDLEWARE = [
 
 // роуты личного кабинета
 // страницы входа
-Route::get('login', [UserController::class, 'login'])->middleware('guest');
+Route::get('login', [UserController::class, 'loginShow'])->middleware('guest');
+Route::post('login', [UserController::class, 'login'])->middleware('guest');
 
 // страницы регистрации
-Route::get('registration', [UserController::class, 'registration'])->middleware('guest');
-Route::post('registration/store', [UserController::class, 'store'])->middleware('guest');
+Route::get('register', [UserController::class, 'registerShow'])->middleware('guest');
+Route::post('register', [UserController::class, 'register'])->middleware('guest');
 // страница выхода
 Route::get('logout', [UserController::class, 'logout'])->middleware('auth');
 

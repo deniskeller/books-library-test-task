@@ -48,7 +48,7 @@
                             <li><a class="nav-link" href="/logout">Выход</a></li>
                         <?php else : ?>
                             <li><a class="nav-link" href="/login">Вход</a></li>
-                            <li><a class="nav-link" href="/registration">Регистрация</a></li>
+                            <li><a class="nav-link" href="/register">Регистрация</a></li>
                         <?php endif ?>
                     </ul>
                 </div>

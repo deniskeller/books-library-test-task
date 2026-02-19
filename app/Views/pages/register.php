@@ -2,7 +2,7 @@
 require_once COMPONENTS . '/header.php';
 ?>
 
-<form class="col-12 col-md-6" method="POST" action="/registration/store">
+<form class="col-12 col-md-6" method="POST" action="/register">
   <h1 class="fs-2">Регистрация</h1>
 
   <div class="mb-3">
