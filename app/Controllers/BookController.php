@@ -14,7 +14,6 @@ class BookController
     private Book $bookModel;
     private Author $authorModel;
     private BookService $bookService;
-    // public array $errors = [];
     public function __construct()
     {
         $this->bookModel = new Book();

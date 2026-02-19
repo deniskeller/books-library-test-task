@@ -39,12 +39,12 @@ class User
     }
   }
 
-  public function getById($id)
+  public function getUser($username)
   {
     try {
-      return $this->db->fetch('SELECT * FROM authors WHERE id = :id', ['id' => $id]);
+      return $this->db->fetch('SELECT * FROM users WHERE username = :username', ['username' => $username]);
     } catch (PDOException $e) {
-      error_log("[User::getById] Ошибка получения пользователя: {$e->getMessage()} | ID пользователя: {$id}");
+      error_log("[User::getUser] Ошибка получения пользователя: {$e->getMessage()} | Логин пользователя: {$username}");
       return null;
     }
   }

@@ -5,7 +5,7 @@ namespace BOOKSLibraryCORE;
 use BOOKSLibraryCORE\FormFieldValidator;
 use BOOKSLibraryMODELS\User;
 
-class UserService
+class AuthService
 {
   private User $userModel;
 
@@ -13,12 +13,13 @@ class UserService
   {
     $this->userModel = new User();
   }
-  public function validateUserData(array $data): array
+  public function validateUserData(array $data, bool $login = false): array
   {
     $errors = [];
 
     $errors['username'] = FormFieldValidator::text($data['username'], [
       'fieldName' => 'Имя пользователя',
+      'numbersAllowed' => true,
       'minLength' => 2,
       'maxLength' => 50,
     ]);
@@ -28,7 +29,7 @@ class UserService
       'minLength' => 8
     ]);
 
-    if (!$this->userModel->isUsernameUnique($data['username'])) {
+    if (!$login && !$this->userModel->isUsernameUnique($data['username'])) {
       $errors['username'] = 'Пользователь с таким логином уже существует';
     }
 
