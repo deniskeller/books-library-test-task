@@ -20,15 +20,16 @@ Route::post('login', [UserController::class, 'login'])->middleware('guest');
 Route::get('register', [UserController::class, 'registerShow'])->middleware('guest');
 Route::post('register', [UserController::class, 'register'])->middleware('guest');
 // страница выхода
-Route::get('logout', [UserController::class, 'logout'])->middleware('auth');
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth');
 
 // роуты книг
 Route::get('', [BookController::class, 'index']); // Главная страница
 Route::get('books/create', [BookController::class, 'create'])->middleware('auth');
 Route::post('books/store', [BookController::class, 'store']);
 Route::get('books/{id}/edit', [BookController::class, 'edit'])->middleware('auth')->middleware(middleware: 'role:admin');
-Route::put('books/{id}', [BookController::class, 'update']);
+Route::put('books/{id}', [BookController::class, 'update'])->middleware('auth');
 Route::delete('books/{id}', [BookController::class, 'destroy'])->middleware('auth')->middleware('role:admin');
+
 Route::get('books/{id}/category/{category}', [BookController::class, 'show']); // тестовый роут для нескольких параметров
 
 // роуты авторов
@@ -36,5 +37,5 @@ Route::get('authors', [AuthorController::class, 'index']);
 Route::get('authors/create', [AuthorController::class, 'create'])->middleware('auth');
 Route::post('authors/store', [AuthorController::class, 'store']);
 Route::get('authors/{id}/edit', [AuthorController::class, 'edit'])->middleware('auth');
-Route::put('authors/{id}', [AuthorController::class, 'update']);
-Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
+Route::put('authors/{id}', [AuthorController::class, 'update'])->middleware('auth');
+Route::delete('authors/{id}', [AuthorController::class, 'destroy'])->middleware('auth')->middleware('role:admin');

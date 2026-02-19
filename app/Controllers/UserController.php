@@ -53,15 +53,6 @@ class UserController
     }
   }
 
-  public function logout(): void
-  {
-    unset($_SESSION['user_id']);
-    unset($_SESSION['user_name']);
-    unset($_SESSION['user_role']);
-
-    View::render('logout');
-  }
-
   public function registerShow(): void
   {
     $title = 'Регистрация';
@@ -97,5 +88,20 @@ class UserController
       $_SESSION['error'] = 'Ошибка при регистрации';
       Route::redirect('/register');
     }
+  }
+
+  public function logout(): void
+  {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      abort(405);
+    }
+
+    unset($_SESSION['user_id']);
+    unset($_SESSION['user_name']);
+    unset($_SESSION['user_role']);
+
+    $_SESSION['success'] = 'Вы успешно вышли из профиля';
+
+    Route::redirect('/');
   }
 }

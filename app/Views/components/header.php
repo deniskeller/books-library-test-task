@@ -44,8 +44,19 @@
 
                     <ul class="d-flex text-white gap-4 align-items-center list-unstyled m-0">
                         <?php if (isset($_SESSION['user_id'])) : ?>
-                            <li><?php echo $_SESSION['user_name'] . ' роль: ' . $_SESSION['user_role'] ?></li>
-                            <li><a class="nav-link" href="/logout">Выход</a></li>
+                            <li>
+                                <div class="">логин: <?php echo $_SESSION['user_name'] ?></div>
+                                <div class="">роль: <?php echo $_SESSION['user_role'] ?></div>
+                            </li>
+                            <li>
+                                <form action="/logout" method="POST" class="d-inline">
+                                    <button type="submit"
+                                        class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Уверены что хотите выйти из профиля?')">Выход
+                                    </button>
+                                </form>
+                                <!-- <a class="nav-link" href="/logout">Выход</a> -->
+                            </li>
                         <?php else : ?>
                             <li><a class="nav-link" href="/login">Вход</a></li>
                             <li><a class="nav-link" href="/register">Регистрация</a></li>
