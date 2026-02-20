@@ -18,7 +18,17 @@ class Book
         }
     }
 
-    public function getAll($authorId = null): ?array
+    public function getTotalCount()
+    {
+        try {
+            return $this->db->fetchColumn('SELECT COUNT(*) FROM books');
+        } catch (PDOException $e) {
+            error_log("[Book::getTotalCount] Ошибка получения общего кол-ва книг: {$e->getMessage()}");
+            return null;
+        }
+    }
+
+    public function getAll($authorId = null, $limit = 3): ?array
     {
         try {
             $sql = "SELECT books.id, books.title, books.year,
@@ -28,11 +38,11 @@ class Book
             LEFT JOIN authors ON book_authors.author_id = authors.id";
 
             if ($authorId) {
-                $sql .= " WHERE books.id IN (SELECT book_id FROM book_authors WHERE author_id = :authorId) GROUP BY books.id";
+                $sql .= " WHERE books.id IN (SELECT book_id FROM book_authors WHERE author_id = :authorId) GROUP BY books.id LIMIT $limit";
                 return $this->db->fetchAll($sql, ['authorId' => $authorId]);
             }
 
-            $sql .= " GROUP BY books.id";
+            $sql .= " GROUP BY books.id LIMIT $limit";
             return $this->db->fetchAll($sql);
         } catch (PDOException $e) {
             error_log("[Book::getAll] Ошибка получения списка книг: {$e->getMessage()}");

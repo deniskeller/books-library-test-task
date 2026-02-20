@@ -26,16 +26,28 @@ class BookController
     {
         unset($_SESSION['errors'], $_SESSION['old_data']);
 
+        //пагинация
+        $per_page = 3;
+        $total_count = $this->bookModel->getTotalCount();
+        // dump($total_count);
+        $pages_count = ceil($total_count / $per_page);
+        dump($pages_count);
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) $page = 1;
+        if ($page > $pages_count) $page = $pages_count;
+        dump($page);
+        $page_start = ($page - 1) * $per_page;
+        dump($page_start);
+
         $title = $this->title;
         $authorFilter = $_GET['book-filter-author'] ?? null;
-        $books = $this->bookModel->getAll((int)$authorFilter);
+        $books = $this->bookModel->getAll((int)$authorFilter, 3);
 
         if (!is_array($books)) {
             $_SESSION['error'] = 'Не удалось загрузить список книг';
         }
         $authors = $this->authorModel->getAll();
 
-        // require VIEWS . '/pages/books/index.php';
         View::render('books.index', compact('title', 'books', 'authors'));
     }
 
@@ -64,14 +76,12 @@ class BookController
         }
 
         View::render('books.edit', compact('book', 'authors'));
-        // require VIEWS . '/pages/books/edit.php';
     }
 
     // рендер страницы создания книги
     public function create(): void
     {
         $authors = $this->authorModel->getAll();
-        // require VIEWS . '/pages/books/edit.php';
         View::render('books.edit', compact('authors'));
     }
 
