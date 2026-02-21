@@ -26,29 +26,32 @@ class BookController
     {
         unset($_SESSION['errors'], $_SESSION['old_data']);
 
+
+
+        $title = $this->title;
+        $authorFilter = $_GET['book-filter-author'] ?? null;
+
         //пагинация
-        $per_page = 3;
+        $limit = 5;
         $total_count = $this->bookModel->getTotalCount();
         // dump($total_count);
-        $pages_count = ceil($total_count / $per_page);
+        $pages_count = ceil($total_count / $limit);
         dump($pages_count);
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) $page = 1;
         if ($page > $pages_count) $page = $pages_count;
-        dump($page);
-        $page_start = ($page - 1) * $per_page;
-        dump($page_start);
+        // dump($page);
+        $offset = ($page - 1) * $limit;
+        // dump($offset);
 
-        $title = $this->title;
-        $authorFilter = $_GET['book-filter-author'] ?? null;
-        $books = $this->bookModel->getAll((int)$authorFilter, 3);
+        $books = $this->bookModel->getAll((int)$authorFilter, $offset, $limit);
 
         if (!is_array($books)) {
             $_SESSION['error'] = 'Не удалось загрузить список книг';
         }
         $authors = $this->authorModel->getAll();
 
-        View::render('books.index', compact('title', 'books', 'authors'));
+        View::render('books.index', compact('title', 'books', 'authors', 'pages_count', 'offset'));
     }
 
     // рендер страницы редатирования книги

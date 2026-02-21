@@ -43,7 +43,7 @@ require_once COMPONENTS . '/header.php';
                     <tbody>
                         <?php foreach ($books as $index => $book) : ?>
                             <tr>
-                                <th><?= $index + 1 ?></th>
+                                <th><?= $offset + $index + 1 ?></th>
                                 <td><?= $book['title'] ?></td>
                                 <td><?= htmlspecialchars($book['authors'] ?? 'Нет авторов') ?></td>
                                 <td><?= $book['year'] ?></td>
@@ -72,6 +72,12 @@ require_once COMPONENTS . '/header.php';
             <?php endif; ?>
         </div>
     </div>
+</div>
+
+<div class="pagination">
+    <?php for ($i = 1; $i <= $pages_count; $i++): ?>
+        <a href="?page=<?= $i ?>"><?= $i ?></a>
+    <?php endfor; ?>
 </div>
 
 <div class="row mt-4">

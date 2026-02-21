@@ -28,7 +28,7 @@ class Book
         }
     }
 
-    public function getAll($authorId = null, $limit = 3): ?array
+    public function getAll($authorId = null, $offset = 0, $limit = 3): ?array
     {
         try {
             $sql = "SELECT books.id, books.title, books.year,
@@ -38,11 +38,11 @@ class Book
             LEFT JOIN authors ON book_authors.author_id = authors.id";
 
             if ($authorId) {
-                $sql .= " WHERE books.id IN (SELECT book_id FROM book_authors WHERE author_id = :authorId) GROUP BY books.id LIMIT $limit";
+                $sql .= " WHERE books.id IN (SELECT book_id FROM book_authors WHERE author_id = :authorId) GROUP BY books.id LIMIT $limit OFFSET $offset";
                 return $this->db->fetchAll($sql, ['authorId' => $authorId]);
             }
 
-            $sql .= " GROUP BY books.id LIMIT $limit";
+            $sql .= " GROUP BY books.id LIMIT $limit OFFSET $offset";
             return $this->db->fetchAll($sql);
         } catch (PDOException $e) {
             error_log("[Book::getAll] Ошибка получения списка книг: {$e->getMessage()}");
