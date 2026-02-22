@@ -18,10 +18,15 @@ class Book
         }
     }
 
-    public function getTotalCount()
+    public function getTotalCount($authorId = null)
     {
         try {
-            return $this->db->fetchColumn('SELECT COUNT(*) FROM books');
+            $sql = 'SELECT COUNT(*) FROM books';
+            if ($authorId) {
+                $sql .= " LEFT JOIN book_authors ON books.id = book_authors.book_id LEFT JOIN authors ON book_authors.author_id = authors.id WHERE authors.id = :authorId";
+                return $this->db->fetchColumn($sql, ['authorId' => $authorId]);
+            }
+            return $this->db->fetchColumn($sql);
         } catch (PDOException $e) {
             error_log("[Book::getTotalCount] Ошибка получения общего кол-ва книг: {$e->getMessage()}");
             return null;

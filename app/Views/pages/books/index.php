@@ -74,11 +74,21 @@ require_once COMPONENTS . '/header.php';
     </div>
 </div>
 
-<div class="pagination">
-    <?php for ($i = 1; $i <= $pages_count; $i++): ?>
-        <a href="?page=<?= $i ?>"><?= $i ?></a>
-    <?php endfor; ?>
-</div>
+<?php if ($authorFilter) : ?>
+    <div class="pagination">
+        <?php for ($i = 1; $i <= $pages_count; $i++): ?>
+            <a href="?book-filter-author=<? echo $authorFilter ?>&page=<?= $i ?>"><?= $i ?></a>
+        <?php endfor; ?>
+    </div>
+<?php else : ?>
+    <div class="pagination">
+        <?php for ($i = 1; $i <= $pages_count; $i++): ?>
+            <a href="?page=<?= $i ?>"><?= $i ?></a>
+        <?php endfor; ?>
+    </div>
+<?php endif; ?>
+
+
 
 <div class="row mt-4">
     <div class="col-12">

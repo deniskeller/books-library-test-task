@@ -26,17 +26,15 @@ class BookController
     {
         unset($_SESSION['errors'], $_SESSION['old_data']);
 
-
-
         $title = $this->title;
         $authorFilter = $_GET['book-filter-author'] ?? null;
 
         //пагинация
         $limit = 5;
-        $total_count = $this->bookModel->getTotalCount();
+        $total_count = $this->bookModel->getTotalCount((int)$authorFilter);
         // dump($total_count);
         $pages_count = ceil($total_count / $limit);
-        dump($pages_count);
+        // dump($pages_count);
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         if ($page < 1) $page = 1;
         if ($page > $pages_count) $page = $pages_count;
@@ -51,7 +49,7 @@ class BookController
         }
         $authors = $this->authorModel->getAll();
 
-        View::render('books.index', compact('title', 'books', 'authors', 'pages_count', 'offset'));
+        View::render('books.index', compact('title', 'books', 'authors', 'pages_count', 'offset', 'authorFilter'));
     }
 
     // рендер страницы редатирования книги
