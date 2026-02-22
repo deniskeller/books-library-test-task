@@ -42,7 +42,7 @@ class BookController
         $offset = ($page - 1) * $limit;
         // dump($offset);
 
-        $books = $this->bookModel->getAll((int)$authorFilter, $offset, $limit);
+        $books = $this->bookModel->getAll((int)$authorFilter,  $limit, $offset);
 
         if (!is_array($books)) {
             $_SESSION['error'] = 'Не удалось загрузить список книг';

@@ -33,7 +33,7 @@ class Book
         }
     }
 
-    public function getAll($authorId = null, $offset = 0, $limit = 3): ?array
+    public function getAll($authorId = null,  $limit = 3, $offset = 0): ?array
     {
         try {
             $sql = "SELECT books.id, books.title, books.year,
