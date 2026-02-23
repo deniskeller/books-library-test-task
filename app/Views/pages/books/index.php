@@ -74,21 +74,33 @@ require_once COMPONENTS . '/header.php';
     </div>
 </div>
 
-<?php if ($authorFilter) : ?>
-    <div class="pagination">
-        <?php for ($i = 1; $i <= $pagination->getCountPages(); $i++): ?>
-            <a href="?book-filter-author=<? echo $authorFilter ?>&page=<?= $i ?>"><?= $i ?></a>
-        <?php endfor; ?>
-    </div>
-<?php else : ?>
-    <div class="pagination">
-        <?php for ($i = 1; $i <= $pagination->getCountPages(); $i++): ?>
-            <a href="?page=<?= $i ?>"><?= $i ?></a>
-        <?php endfor; ?>
-    </div>
+<?php if ($pagination->getCountPages() > 1): ?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <?php for ($i = 1; $i <= $pagination->getCountPages(); $i++): ?>
+                <li class="page-item">
+                    <?php if ($authorFilter) : ?>
+                        <a class="page-link" href="?book-filter-author=<? echo $authorFilter ?>&page=<?= $i ?>"><?= $i ?></a>
+                    <?php else : ?>
+                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                    <?php endif; ?>
+                </li>
+            <?php endfor; ?>
+
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 <?php endif; ?>
-
-
 
 <div class="row mt-4">
     <div class="col-12">

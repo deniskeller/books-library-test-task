@@ -39,6 +39,11 @@ class Pagination
   {
     return ceil($this->totalCount / $this->limit);
   }
+
+  public function getTotalCount(): int
+  {
+    return $this->limit;
+  }
   public function getLimit(): int
   {
     return $this->limit;
