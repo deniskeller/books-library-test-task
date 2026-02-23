@@ -1,5 +1,8 @@
 <?php
 require_once COMPONENTS . '/header.php';
+dump($_SERVER['REQUEST_URI']);
+dump(http_build_query($_GET));
+dump($_GET);
 ?>
 
 <div class="row mb-40">
@@ -77,8 +80,8 @@ require_once COMPONENTS . '/header.php';
 <?php if ($pagination->getCountPages() > 1): ?>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+            <li class="page-item <?= !$pagination->hasPrev() ? 'disabled' : '' ?>">
+                <a class="page-link" href="<?= $pagination->prevPageUrl() ?? '#' ?>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -93,8 +96,8 @@ require_once COMPONENTS . '/header.php';
                 </li>
             <?php endfor; ?>
 
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+            <li class="page-item <?= !$pagination->hasNext() ? 'disabled' : '' ?>">
+                <a class="page-link" href="<?= $pagination->nextPageUrl() ?? '#' ?>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
