@@ -3,6 +3,7 @@
 namespace BOOKSLibraryCONTROLLERS;
 
 use BOOKSLibraryCORE\BookService;
+use BOOKSLibraryCORE\Pagination;
 use BOOKSLibraryCORE\View;
 use BOOKSLibraryMODELS\Author;
 use BOOKSLibraryMODELS\Book;
@@ -42,6 +43,7 @@ class BookController
         $offset = ($page - 1) * $limit;
         // dump($offset);
 
+        $pagination = new Pagination($limit, $page);
         $books = $this->bookModel->getAll((int)$authorFilter,  $limit, $offset);
 
         if (!is_array($books)) {
@@ -49,7 +51,7 @@ class BookController
         }
         $authors = $this->authorModel->getAll();
 
-        View::render('books.index', compact('title', 'books', 'authors', 'pages_count', 'offset', 'authorFilter'));
+        View::render('books.index', compact('title', 'books', 'authors', 'pages_count', 'offset', 'authorFilter', 'pagination'));
     }
 
     // рендер страницы редатирования книги

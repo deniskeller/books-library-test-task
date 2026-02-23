@@ -1,5 +1,7 @@
 <?php
 require_once COMPONENTS . '/header.php';
+
+dump($pagination->getLimit())
 ?>
 
 <div class="row mb-40">
