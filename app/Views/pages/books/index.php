@@ -1,7 +1,5 @@
 <?php
 require_once COMPONENTS . '/header.php';
-
-dump($pagination->getLimit())
 ?>
 
 <div class="row mb-40">
@@ -45,7 +43,7 @@ dump($pagination->getLimit())
                     <tbody>
                         <?php foreach ($books as $index => $book) : ?>
                             <tr>
-                                <th><?= $offset + $index + 1 ?></th>
+                                <th><?= $pagination->getOffset() + $index + 1 ?></th>
                                 <td><?= $book['title'] ?></td>
                                 <td><?= htmlspecialchars($book['authors'] ?? 'Нет авторов') ?></td>
                                 <td><?= $book['year'] ?></td>
@@ -78,13 +76,13 @@ dump($pagination->getLimit())
 
 <?php if ($authorFilter) : ?>
     <div class="pagination">
-        <?php for ($i = 1; $i <= $pages_count; $i++): ?>
+        <?php for ($i = 1; $i <= $pagination->getCountPages(); $i++): ?>
             <a href="?book-filter-author=<? echo $authorFilter ?>&page=<?= $i ?>"><?= $i ?></a>
         <?php endfor; ?>
     </div>
 <?php else : ?>
     <div class="pagination">
-        <?php for ($i = 1; $i <= $pages_count; $i++): ?>
+        <?php for ($i = 1; $i <= $pagination->getCountPages(); $i++): ?>
             <a href="?page=<?= $i ?>"><?= $i ?></a>
         <?php endfor; ?>
     </div>
