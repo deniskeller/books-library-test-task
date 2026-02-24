@@ -1,8 +1,5 @@
 <?php
 require_once COMPONENTS . '/header.php';
-dump($_SERVER['REQUEST_URI']);
-dump(http_build_query($_GET));
-dump($_GET);
 ?>
 
 <div class="row mb-40">
