@@ -31,9 +31,10 @@ class BookController
         $authorFilter = $_GET['book-filter-author'] ?? null;
 
         //пагинация
-        $limit = 5;
+        $limit = 2;
         $totalCount = $this->bookModel->getTotalCount((int)$authorFilter);
         $pagination = new Pagination($limit, $totalCount);
+        dump($pagination);
 
         $books = $this->bookModel->getAll((int)$authorFilter,  $limit, $pagination->getOffset());
 

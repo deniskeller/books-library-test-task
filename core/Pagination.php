@@ -10,13 +10,20 @@ class Pagination
   private $countPages; // всего страниц
   private $offset; // отступ пагинации
 
-  public function __construct(int $limit = 10, int $totalCount, int|null $currentPage = null)
-  {
+
+  public function __construct(
+    int $limit = 10,
+    int $totalCount,
+    int|null $currentPage = null,
+    private int $midSize = 2, // кол-во страниц по бокам от текущей
+    private int $maxPages = 8 // максимальное кол-во отображаемых страниц
+  ) {
     $this->limit = $limit;
     $this->totalCount = $totalCount;
     $this->currentPage = $currentPage ?? $this->getCurrentPage();
     $this->offset = $this->getOffset();
     $this->countPages = $this->getCountPages();
+    $this->midSize = $this->getMidSize();
   }
 
   // текущая страница
@@ -81,6 +88,11 @@ class Pagination
     $params['page'] = $page;
 
     return '?' . http_build_query($params);
+  }
+
+  private function getMidSize(): int
+  {
+    return $this->countPages <= $this->maxPages ? $this->countPages : $this->midSize;
   }
 
   public function getTotalCount(): int
