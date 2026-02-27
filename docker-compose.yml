@@ -1,0 +1,53 @@
+# compose.yaml
+services:
+  # Веб-сервер с PHP и Apache
+  web:
+    build: .
+    container_name: myproject_web
+    ports:
+      - "8080:80" # Проект будет доступен по адресу http://localhost:8080
+    volumes:
+      - .:/var/www/html # Синхронизация файлов (код на лету обновляется)
+    environment:
+      - PHP_ERROR_REPORTING=E_ALL # Показывать все ошибки PHP для разработки
+    depends_on:
+      db:
+        condition: service_healthy # Ждем, пока БД полностью запустится
+    # Автоматическое обновление при изменении файлов
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /var/www/html
+        - action: rebuild # Пересобрать, если изменился Dockerfile
+          path: ./Dockerfile
+
+  # База данных MySQL
+  db:
+    image: mysql:8.0
+    container_name: myproject_db
+    ports:
+      - "3307:3306" # Доступ к БД извне (например, из HeidiSQL/DBeaver)
+    environment:
+      MYSQL_ROOT_PASSWORD: root # Пароль для root
+      MYSQL_DATABASE: library_db # Имя базы данных по умолчанию
+      MYSQL_USER: user # Дополнительный пользователь (по желанию)
+      MYSQL_PASSWORD: password # Пароль для дополнительного пользователя
+    volumes:
+      - db_data:/var/lib/mysql # Сохраняем данные БД между перезапусками
+      - ./database-dumps:/docker-entrypoint-initdb.d
+      - ./mysql-config:/etc/mysql/conf.d
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+    healthcheck:
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data: # Том для хранения данных MySQL

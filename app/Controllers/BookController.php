@@ -34,7 +34,7 @@ class BookController
         $limit = 2;
         $totalCount = $this->bookModel->getTotalCount((int)$authorFilter);
         $pagination = new Pagination($limit, $totalCount);
-        dump($pagination);
+        // dump($pagination);
 
         $books = $this->bookModel->getAll((int)$authorFilter,  $limit, $pagination->getOffset());
 

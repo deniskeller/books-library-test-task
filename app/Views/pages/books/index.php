@@ -86,7 +86,7 @@ require_once COMPONENTS . '/header.php';
             <?php for ($i = 1; $i <= $pagination->getCountPages(); $i++): ?>
                 <li class="page-item">
                     <?php if ($authorFilter) : ?>
-                        <a class="page-link <?= $pagination->getCurrentPage() == $i ? 'active' : '' ?>" href="?book-filter-author=<? echo $authorFilter ?>&page=<?= $i ?>"><?= $i ?></a>
+                        <a class="page-link active <?= $pagination->getCurrentPage() == $i ? 'active' : '' ?>" href="?book-filter-author=<? echo $authorFilter ?>&page=<?= $i ?>"><?= $i ?></a>
                     <?php else : ?>
                         <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
                     <?php endif; ?>
