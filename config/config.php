@@ -11,6 +11,7 @@ const MODELS = APP . '/Models';
 const VIEWS = APP . '/Views';
 const COMPONENTS = VIEWS . '/components';
 const PATH = 'https://library'; // для Open Server
+// const PATH = 'http://localhost:8080'; // для Docker
 
 // для Docker
 // if (isset($_SERVER['HTTP_HOST'])) {
