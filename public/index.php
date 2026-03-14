@@ -4,6 +4,11 @@ use BOOKSLibraryROUTING\Route;
 
 session_start();
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $_SESSION['previous_url'] = $_SESSION['current_url'] ?? '/';
+    $_SESSION['current_url'] = $_SERVER['REQUEST_URI'];
+}
+
 $start_app = microtime(true);
 
 if (PHP_MAJOR_VERSION < 8) {

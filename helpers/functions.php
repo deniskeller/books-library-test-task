@@ -147,12 +147,17 @@ function getAlert()
 
 function back()
 {
-    $referer = $_SERVER['HTTP_REFERER'] ?? null;
+    // $referer = $_SERVER['HTTP_REFERER'] ?? null;
 
-    if ($referer) {
-        header("Location: $referer");
-    } else {
-        header("Location: /");
-    }
+    // if ($referer) {
+    //     header("Location: $referer");
+    // } else {
+    //     header("Location: /");
+    // }
+    // exit;
+
+    $url = $_SESSION['previous_url'] ?? $_SERVER['HTTP_REFERER'] ?? '/';
+
+    header("Location: " . $url);
     exit;
 }
