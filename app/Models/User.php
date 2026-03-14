@@ -21,7 +21,7 @@ class User
   public function create($username, $password_hash): int|bool
   {
     try {
-      return $this->db->insert('users', ['username' => $username, 'password_hash' => $password_hash]);
+      return $this->db->insert('users', ['username' => $username, 'password_hash' => $password_hash, 'user_role' => 'user']);
     } catch (PDOException $e) {
       error_log("[User::create] Ошибка регистрации пользователя: {$e->getMessage()} | Логин пользователя: {$username}");
       return false;

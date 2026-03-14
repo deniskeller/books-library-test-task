@@ -35,11 +35,19 @@
 ### Инструкция по запуску
 
 1. **Клонируйте репозиторий**
-   ```bash
-   git clone https://github.com/deniskeller/books-library-test-task
-   ```
+
+```bash
+git clone https://github.com/deniskeller/books-library-test-task
+```
+
 2. **Запустите контейнеры**
 
 ```bash
   docker-compose up -d
+```
+
+3. ** Откройте приложение в браузере **
+
+```bash
+  http://localhost:8080/
 ```
