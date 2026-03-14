@@ -52,5 +52,6 @@ git clone https://github.com/deniskeller/books-library-test-task
   http://localhost:8080/
 ```
 
-**P.S.**
+### P.S.
+
 В файлах .env.dev и config/config.php есть настройки для Open Server. Надо просто закоментировать docker-настройки на openserver-настройки. В варианте с запуском докер некорректно работают Middleware-ы. Попозже разберусь с этим.
