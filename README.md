@@ -37,7 +37,9 @@
 1. **Клонируйте репозиторий**
    ```bash
    git clone https://github.com/deniskeller/books-library-test-task
-   cd <название-папки-проекта>
    ```
 2. **Запустите контейнеры**
-   docker-compose up -d
+
+```bash
+  docker-compose up -d
+```
