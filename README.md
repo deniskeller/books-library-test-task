@@ -24,3 +24,20 @@
 
 - **PHP** 8.4
 - **MySQL**
+
+## Запуск проекта в Docker
+
+### Требования
+
+- Установленный Docker
+- Установленный Docker Compose
+
+### Инструкция по запуску
+
+1. **Клонируйте репозиторий**
+   ```bash
+   git clone https://github.com/deniskeller/books-library-test-task
+   cd <название-папки-проекта>
+   ```
+2. **Запустите контейнеры**
+   docker-compose up -d
