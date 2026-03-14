@@ -143,3 +143,16 @@ function getAlert()
         unset($_SESSION['error']);
     }
 }
+
+
+function back()
+{
+    $referer = $_SERVER['HTTP_REFERER'] ?? null;
+
+    if ($referer) {
+        header("Location: $referer");
+    } else {
+        header("Location: /");
+    }
+    exit;
+}

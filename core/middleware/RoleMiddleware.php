@@ -10,7 +10,10 @@ class RoleMiddleware
     // echo 'запуска миддлвера роль';
     if ($_SESSION['user_role'] !== 'admin') {
       // echo "Доступ запрещен. Требуется роль админ";
-      exit;
+      // dd($_SERVER);
+      $_SESSION['error'] = 'У вас нет прав доступа для этих дейтвий';
+      back();
+      // exit;
     }
   }
 }
