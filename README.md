@@ -46,8 +46,11 @@ git clone https://github.com/deniskeller/books-library-test-task
   docker-compose up -d
 ```
 
-3. ** Откройте приложение в браузере **
+3. **Откройте приложение в браузере**
 
 ```bash
   http://localhost:8080/
 ```
+
+**P.S.**
+В файлах .env.dev и config/config.php есть настройки для Open Server. Надо просто закоментировать docker-настройки на openserver-настройки. В варианте с запуском докер некорректно работают Middleware-ы. Попозже разберусь с этим.
